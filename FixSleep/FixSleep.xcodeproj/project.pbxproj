@@ -21,6 +21,26 @@
 		773019F72EE4BEAC0033EB26 /* FixSleep_Watch_Watch_AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773019F62EE4BEAC0033EB26 /* FixSleep_Watch_Watch_AppTests.swift */; };
 		77301A012EE4BEAC0033EB26 /* FixSleep_Watch_Watch_AppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77301A002EE4BEAC0033EB26 /* FixSleep_Watch_Watch_AppUITests.swift */; };
 		77301A032EE4BEAC0033EB26 /* FixSleep_Watch_Watch_AppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77301A022EE4BEAC0033EB26 /* FixSleep_Watch_Watch_AppUITestsLaunchTests.swift */; };
+		774B4A942EE4CC50009FB253 /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4A872EE4CC50009FB253 /* AppConfiguration.swift */; };
+		774B4A952EE4CC50009FB253 /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4A872EE4CC50009FB253 /* AppConfiguration.swift */; };
+		774B4A962EE4CC50009FB253 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4A892EE4CC50009FB253 /* Event.swift */; };
+		774B4A972EE4CC50009FB253 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4A892EE4CC50009FB253 /* Event.swift */; };
+		774B4A982EE4CC50009FB253 /* HeartRateData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4A8A2EE4CC50009FB253 /* HeartRateData.swift */; };
+		774B4A992EE4CC50009FB253 /* HeartRateData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4A8A2EE4CC50009FB253 /* HeartRateData.swift */; };
+		774B4A9A2EE4CC50009FB253 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4A8B2EE4CC50009FB253 /* Settings.swift */; };
+		774B4A9B2EE4CC50009FB253 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4A8B2EE4CC50009FB253 /* Settings.swift */; };
+		774B4A9C2EE4CC50009FB253 /* BackgroundEffects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4A8D2EE4CC50009FB253 /* BackgroundEffects.swift */; };
+		774B4A9D2EE4CC50009FB253 /* BackgroundEffects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4A8D2EE4CC50009FB253 /* BackgroundEffects.swift */; };
+		774B4A9E2EE4CC50009FB253 /* AppIcons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4A8E2EE4CC50009FB253 /* AppIcons.swift */; };
+		774B4A9F2EE4CC50009FB253 /* AppIcons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4A8E2EE4CC50009FB253 /* AppIcons.swift */; };
+		774B4AA02EE4CC50009FB253 /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4A8F2EE4CC50009FB253 /* AppTheme.swift */; };
+		774B4AA12EE4CC50009FB253 /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4A8F2EE4CC50009FB253 /* AppTheme.swift */; };
+		774B4AA22EE4CC50009FB253 /* ThemeComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4A902EE4CC50009FB253 /* ThemeComponents.swift */; };
+		774B4AA32EE4CC50009FB253 /* ThemeComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4A902EE4CC50009FB253 /* ThemeComponents.swift */; };
+		774B4AA42EE4CC50009FB253 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4A922EE4CC50009FB253 /* DataManager.swift */; };
+		774B4AA52EE4CC50009FB253 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4A922EE4CC50009FB253 /* DataManager.swift */; };
+		774B4AA62EE4CC50009FB253 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4A932EE4CC50009FB253 /* HealthKitManager.swift */; };
+		774B4AA72EE4CC50009FB253 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4A932EE4CC50009FB253 /* HealthKitManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +95,20 @@
 		773019FC2EE4BEAC0033EB26 /* FixSleep Watch Watch AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "FixSleep Watch Watch AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		77301A002EE4BEAC0033EB26 /* FixSleep_Watch_Watch_AppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixSleep_Watch_Watch_AppUITests.swift; sourceTree = "<group>"; };
 		77301A022EE4BEAC0033EB26 /* FixSleep_Watch_Watch_AppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixSleep_Watch_Watch_AppUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		774B4A872EE4CC50009FB253 /* AppConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConfiguration.swift; sourceTree = "<group>"; };
+		774B4A892EE4CC50009FB253 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
+		774B4A8A2EE4CC50009FB253 /* HeartRateData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeartRateData.swift; sourceTree = "<group>"; };
+		774B4A8B2EE4CC50009FB253 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		774B4A8D2EE4CC50009FB253 /* BackgroundEffects.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundEffects.swift; sourceTree = "<group>"; };
+		774B4A8E2EE4CC50009FB253 /* AppIcons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppIcons.swift; sourceTree = "<group>"; };
+		774B4A8F2EE4CC50009FB253 /* AppTheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
+		774B4A902EE4CC50009FB253 /* ThemeComponents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeComponents.swift; sourceTree = "<group>"; };
+		774B4A922EE4CC50009FB253 /* DataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		774B4A932EE4CC50009FB253 /* HealthKitManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthKitManager.swift; sourceTree = "<group>"; };
+		774B4AA82EE4CE49009FB253 /* FixSleep.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FixSleep.entitlements; sourceTree = "<group>"; };
+		774B4AA92EE4CECC009FB253 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		774B4AAA2EE4CF2C009FB253 /* FixSleep Watch Watch App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "FixSleep Watch Watch App.entitlements"; sourceTree = "<group>"; };
+		774B4AAB2EE4CF66009FB253 /* FixSleep-Watch-Watch-App-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "FixSleep-Watch-Watch-App-Info.plist"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +160,7 @@
 		773019A92EE4BD140033EB26 = {
 			isa = PBXGroup;
 			children = (
+				774B4A852EE4CC50009FB253 /* Shared */,
 				773019B42EE4BD140033EB26 /* FixSleep */,
 				773019C52EE4BD160033EB26 /* FixSleepTests */,
 				773019CF2EE4BD160033EB26 /* FixSleepUITests */,
@@ -152,6 +187,8 @@
 		773019B42EE4BD140033EB26 /* FixSleep */ = {
 			isa = PBXGroup;
 			children = (
+				774B4AA92EE4CECC009FB253 /* Info.plist */,
+				774B4AA82EE4CE49009FB253 /* FixSleep.entitlements */,
 				773019B52EE4BD140033EB26 /* FixSleepApp.swift */,
 				773019B72EE4BD140033EB26 /* ContentView.swift */,
 				773019B92EE4BD160033EB26 /* Assets.xcassets */,
@@ -188,6 +225,8 @@
 		773019E42EE4BEA90033EB26 /* FixSleep Watch Watch App */ = {
 			isa = PBXGroup;
 			children = (
+				774B4AAB2EE4CF66009FB253 /* FixSleep-Watch-Watch-App-Info.plist */,
+				774B4AAA2EE4CF2C009FB253 /* FixSleep Watch Watch App.entitlements */,
 				773019E52EE4BEA90033EB26 /* FixSleep_WatchApp.swift */,
 				773019E72EE4BEA90033EB26 /* ContentView.swift */,
 				773019E92EE4BEAB0033EB26 /* Assets.xcassets */,
@@ -219,6 +258,56 @@
 				77301A022EE4BEAC0033EB26 /* FixSleep_Watch_Watch_AppUITestsLaunchTests.swift */,
 			);
 			path = "FixSleep Watch Watch AppUITests";
+			sourceTree = "<group>";
+		};
+		774B4A852EE4CC50009FB253 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				774B4A862EE4CC50009FB253 /* Configuration */,
+				774B4A882EE4CC50009FB253 /* Models */,
+				774B4A8C2EE4CC50009FB253 /* Theme */,
+				774B4A912EE4CC50009FB253 /* Services */,
+			);
+			name = Shared;
+			path = ../Shared;
+			sourceTree = "<group>";
+		};
+		774B4A862EE4CC50009FB253 /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				774B4A872EE4CC50009FB253 /* AppConfiguration.swift */,
+			);
+			path = Configuration;
+			sourceTree = "<group>";
+		};
+		774B4A882EE4CC50009FB253 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				774B4A892EE4CC50009FB253 /* Event.swift */,
+				774B4A8A2EE4CC50009FB253 /* HeartRateData.swift */,
+				774B4A8B2EE4CC50009FB253 /* Settings.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		774B4A8C2EE4CC50009FB253 /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				774B4A8D2EE4CC50009FB253 /* BackgroundEffects.swift */,
+				774B4A8E2EE4CC50009FB253 /* AppIcons.swift */,
+				774B4A8F2EE4CC50009FB253 /* AppTheme.swift */,
+				774B4A902EE4CC50009FB253 /* ThemeComponents.swift */,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
+		774B4A912EE4CC50009FB253 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				774B4A922EE4CC50009FB253 /* DataManager.swift */,
+				774B4A932EE4CC50009FB253 /* HealthKitManager.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -441,8 +530,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				774B4A9A2EE4CC50009FB253 /* Settings.swift in Sources */,
+				774B4A982EE4CC50009FB253 /* HeartRateData.swift in Sources */,
+				774B4AA62EE4CC50009FB253 /* HealthKitManager.swift in Sources */,
+				774B4A962EE4CC50009FB253 /* Event.swift in Sources */,
+				774B4AA02EE4CC50009FB253 /* AppTheme.swift in Sources */,
+				774B4A942EE4CC50009FB253 /* AppConfiguration.swift in Sources */,
 				773019B82EE4BD140033EB26 /* ContentView.swift in Sources */,
 				773019B62EE4BD140033EB26 /* FixSleepApp.swift in Sources */,
+				774B4A9E2EE4CC50009FB253 /* AppIcons.swift in Sources */,
+				774B4AA42EE4CC50009FB253 /* DataManager.swift in Sources */,
+				774B4A9C2EE4CC50009FB253 /* BackgroundEffects.swift in Sources */,
+				774B4AA22EE4CC50009FB253 /* ThemeComponents.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -467,8 +566,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				774B4A9B2EE4CC50009FB253 /* Settings.swift in Sources */,
+				774B4A992EE4CC50009FB253 /* HeartRateData.swift in Sources */,
+				774B4AA72EE4CC50009FB253 /* HealthKitManager.swift in Sources */,
+				774B4A972EE4CC50009FB253 /* Event.swift in Sources */,
+				774B4AA12EE4CC50009FB253 /* AppTheme.swift in Sources */,
+				774B4A952EE4CC50009FB253 /* AppConfiguration.swift in Sources */,
 				773019E82EE4BEA90033EB26 /* ContentView.swift in Sources */,
 				773019E62EE4BEA90033EB26 /* FixSleep_WatchApp.swift in Sources */,
+				774B4A9F2EE4CC50009FB253 /* AppIcons.swift in Sources */,
+				774B4AA52EE4CC50009FB253 /* DataManager.swift in Sources */,
+				774B4A9D2EE4CC50009FB253 /* BackgroundEffects.swift in Sources */,
+				774B4AA32EE4CC50009FB253 /* ThemeComponents.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -634,16 +743,20 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = FixSleep/FixSleep.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"FixSleep/Preview Content\"";
+				DEVELOPMENT_TEAM = 549D6368V6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FixSleep/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -662,16 +775,20 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = FixSleep/FixSleep.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"FixSleep/Preview Content\"";
+				DEVELOPMENT_TEAM = 549D6368V6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FixSleep/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -762,11 +879,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "FixSleep Watch Watch App/FixSleep Watch Watch App.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"FixSleep Watch Watch App/Preview Content\"";
+				DEVELOPMENT_TEAM = 549D6368V6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "FixSleep-Watch-Watch-App-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "FixSleep Watch";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "";
@@ -775,14 +895,14 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = .watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = FixSleepWatch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 9.1;
+				WATCHOS_DEPLOYMENT_TARGET = 7.0;
 			};
 			name = Debug;
 		};
@@ -791,11 +911,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "FixSleep Watch Watch App/FixSleep Watch Watch App.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"FixSleep Watch Watch App/Preview Content\"";
+				DEVELOPMENT_TEAM = 549D6368V6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "FixSleep-Watch-Watch-App-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "FixSleep Watch";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "";
@@ -804,14 +927,14 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = .watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = FixSleepWatch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 9.1;
+				WATCHOS_DEPLOYMENT_TARGET = 7.0;
 			};
 			name = Release;
 		};
