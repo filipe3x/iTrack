@@ -18,7 +18,7 @@ struct DashboardView: View {
                     // Header
                     VStack(spacing: AppTheme.Spacing.sm) {
                         MoonGlowIcon(size: 48)
-                        Text("iTrack")
+                        Text("FixSleep")
                             .font(AppTheme.Typography.largeTitle())
                             .foregroundColor(AppTheme.Text.primary)
                         Text("Monitor de Arousal Noturno")
@@ -55,7 +55,7 @@ struct DashboardView: View {
             subtitle: watchConnectivity.isWatchAppInstalled ? "Conectado" : "Desconectado",
             description: watchConnectivity.isWatchAppInstalled
                 ? "O seu Apple Watch está sincronizado e pronto"
-                : "Instale iTrack no Apple Watch para começar",
+                : "Instale FixSleep no Apple Watch para começar",
             accentColor: watchConnectivity.isWatchAppInstalled
                 ? AppTheme.Accent.mint
                 : AppTheme.Accent.rose

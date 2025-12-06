@@ -1,6 +1,6 @@
 //
 //  ContentView.swift
-//  iTrack WatchKit Extension
+//  FixSleep WatchKit Extension
 //
 //  Main view for watchOS app
 //

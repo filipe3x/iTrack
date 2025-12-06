@@ -1,6 +1,6 @@
 //
 //  AppTheme.swift
-//  iTrack
+//  FixSleep
 //
 //  Branding based on Rotina Noturna website
 //  Deep night sky theme with lavender, chamomile, and moon accents
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-/// Main theme configuration for iTrack app
+/// Main theme configuration for FixSleep app
 /// Based on the Rotina Noturna sleep protocol website branding
 struct AppTheme {
 

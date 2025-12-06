@@ -1,6 +1,6 @@
 //
 //  BackgroundEffects.swift
-//  iTrack
+//  FixSleep
 //
 //  Animated background effects matching website aesthetic
 //  Starfield and gradient orbs for deep night sky theme
@@ -274,7 +274,7 @@ struct BackgroundEffects_Previews: PreviewProvider {
             // Moon glow icon
             VStack {
                 MoonGlowIcon(size: 60)
-                Text("iTrack")
+                Text("FixSleep")
                     .font(AppTheme.Typography.largeTitle())
                     .foregroundColor(AppTheme.Text.primary)
             }

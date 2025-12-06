@@ -1,6 +1,6 @@
 //
 //  MonitoringView.swift
-//  iTrack WatchKit Extension
+//  FixSleep WatchKit Extension
 //
 //  Main monitoring interface
 //

@@ -1,6 +1,6 @@
 //
 //  ContentView.swift
-//  iTrack
+//  FixSleep
 //
 //  Main view for iOS app
 //

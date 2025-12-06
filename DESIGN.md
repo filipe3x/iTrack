@@ -1,4 +1,4 @@
-# iTrack Design System
+# FixSleep Design System
 
 **Version:** 1.0
 **Last Updated:** December 6, 2025
@@ -8,7 +8,7 @@
 
 ## Overview
 
-iTrack uses a **deep night sky theme** inspired by sleep protocols and nocturnal serenity. The design language emphasizes calm, rest, and monitoring through:
+FixSleep uses a **deep night sky theme** inspired by sleep protocols and nocturnal serenity. The design language emphasizes calm, rest, and monitoring through:
 
 - Deep backgrounds reminiscent of nighttime
 - Soft, dreamy accent colors (lavender, chamomile, moon)
@@ -635,5 +635,5 @@ ZStack {
 
 ---
 
-**Maintained by:** iTrack Design Team
+**Maintained by:** FixSleep Design Team
 **Questions?** Refer to `/Shared/Theme/` source files for implementation details
