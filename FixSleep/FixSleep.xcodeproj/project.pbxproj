@@ -14,7 +14,7 @@
 		773019C72EE4BD160033EB26 /* FixSleepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773019C62EE4BD160033EB26 /* FixSleepTests.swift */; };
 		773019D12EE4BD160033EB26 /* FixSleepUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773019D02EE4BD160033EB26 /* FixSleepUITests.swift */; };
 		773019D32EE4BD160033EB26 /* FixSleepUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773019D22EE4BD160033EB26 /* FixSleepUITestsLaunchTests.swift */; };
-		773019E62EE4BEA90033EB26 /* FixSleep_WatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773019E52EE4BEA90033EB26 /* FixSleep_WatchApp.swift */; };
+		773019E62EE4BEA90033EB26 /* FixSleepWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773019E52EE4BEA90033EB26 /* FixSleepWatchApp.swift */; };
 		773019E82EE4BEA90033EB26 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773019E72EE4BEA90033EB26 /* ContentView.swift */; };
 		773019EA2EE4BEAB0033EB26 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 773019E92EE4BEAB0033EB26 /* Assets.xcassets */; };
 		773019ED2EE4BEAB0033EB26 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 773019EC2EE4BEAB0033EB26 /* Preview Assets.xcassets */; };
@@ -86,7 +86,7 @@
 		773019D02EE4BD160033EB26 /* FixSleepUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixSleepUITests.swift; sourceTree = "<group>"; };
 		773019D22EE4BD160033EB26 /* FixSleepUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixSleepUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		773019E32EE4BEA80033EB26 /* FixSleep Watch Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FixSleep Watch Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		773019E52EE4BEA90033EB26 /* FixSleep_WatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixSleep_WatchApp.swift; sourceTree = "<group>"; };
+		773019E52EE4BEA90033EB26 /* FixSleepWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixSleepWatchApp.swift; sourceTree = "<group>"; };
 		773019E72EE4BEA90033EB26 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		773019E92EE4BEAB0033EB26 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		773019EC2EE4BEAB0033EB26 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -227,7 +227,7 @@
 			children = (
 				774B4AAB2EE4CF66009FB253 /* FixSleep-Watch-Watch-App-Info.plist */,
 				774B4AAA2EE4CF2C009FB253 /* FixSleep Watch Watch App.entitlements */,
-				773019E52EE4BEA90033EB26 /* FixSleep_WatchApp.swift */,
+				773019E52EE4BEA90033EB26 /* FixSleepWatchApp.swift */,
 				773019E72EE4BEA90033EB26 /* ContentView.swift */,
 				773019E92EE4BEAB0033EB26 /* Assets.xcassets */,
 				773019EB2EE4BEAB0033EB26 /* Preview Content */,
@@ -573,7 +573,7 @@
 				774B4AA12EE4CC50009FB253 /* AppTheme.swift in Sources */,
 				774B4A952EE4CC50009FB253 /* AppConfiguration.swift in Sources */,
 				773019E82EE4BEA90033EB26 /* ContentView.swift in Sources */,
-				773019E62EE4BEA90033EB26 /* FixSleep_WatchApp.swift in Sources */,
+				773019E62EE4BEA90033EB26 /* FixSleepWatchApp.swift in Sources */,
 				774B4A9F2EE4CC50009FB253 /* AppIcons.swift in Sources */,
 				774B4AA52EE4CC50009FB253 /* DataManager.swift in Sources */,
 				774B4A9D2EE4CC50009FB253 /* BackgroundEffects.swift in Sources */,
