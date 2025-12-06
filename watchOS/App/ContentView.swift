@@ -15,19 +15,20 @@ struct ContentView: View {
         TabView {
             MonitoringView()
                 .tabItem {
-                    Label("Monitor", systemImage: "heart.fill")
+                    Label("Monitor", systemImage: AppIcons.heartRate)
                 }
 
             EventListView()
                 .tabItem {
-                    Label("Events", systemImage: "list.bullet")
+                    Label("Eventos", systemImage: AppIcons.list)
                 }
 
             SettingsView()
                 .tabItem {
-                    Label("Settings", systemImage: "gear")
+                    Label("Definições", systemImage: AppIcons.settings)
                 }
         }
+        .accentColor(AppTheme.Accent.lavender)
     }
 }
 

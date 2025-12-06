@@ -15,24 +15,32 @@ struct ContentView: View {
     @State private var showOnboarding = false
 
     var body: some View {
-        TabView(selection: $selectedTab) {
-            DashboardView()
-                .tabItem {
-                    Label("Dashboard", systemImage: "heart.text.square.fill")
-                }
-                .tag(0)
+        ZStack {
+            // Night sky background
+            NightSkyBackground()
+                .ignoresSafeArea()
 
-            EventLogView()
-                .tabItem {
-                    Label("Events", systemImage: "list.bullet.clipboard")
-                }
-                .tag(1)
+            // Tab view with themed styling
+            TabView(selection: $selectedTab) {
+                DashboardView()
+                    .tabItem {
+                        Label("Dashboard", systemImage: AppIcons.heartRate)
+                    }
+                    .tag(0)
 
-            SettingsView()
-                .tabItem {
-                    Label("Settings", systemImage: "gear")
-                }
-                .tag(2)
+                EventLogView()
+                    .tabItem {
+                        Label("Eventos", systemImage: AppIcons.list)
+                    }
+                    .tag(1)
+
+                SettingsView()
+                    .tabItem {
+                        Label("Definições", systemImage: AppIcons.settings)
+                    }
+                    .tag(2)
+            }
+            .accentColor(AppTheme.Accent.lavender)
         }
         .sheet(isPresented: $showOnboarding) {
             OnboardingView(isPresented: $showOnboarding)
@@ -40,6 +48,7 @@ struct ContentView: View {
         .onAppear {
             checkOnboardingStatus()
         }
+        .preferredColorScheme(.dark)
     }
 
     private func checkOnboardingStatus() {

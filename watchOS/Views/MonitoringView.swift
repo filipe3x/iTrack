@@ -14,56 +14,78 @@ struct MonitoringView: View {
     @State private var errorMessage = ""
 
     var body: some View {
-        VStack(spacing: 10) {
-            // Current heart rate display
-            VStack(spacing: 4) {
-                Text("Heart Rate")
-                    .font(.caption)
-                    .foregroundColor(.gray)
+        ZStack {
+            // Minimal background for watchOS
+            MinimalNightBackground()
+                .ignoresSafeArea()
 
-                HStack(alignment: .firstTextBaseline, spacing: 2) {
-                    Text("\(Int(heartRateMonitor.currentHeartRate))")
-                        .font(.system(size: 48, weight: .bold, design: .rounded))
-                        .foregroundColor(heartRateColor)
+            ScrollView {
+                VStack(spacing: 12) {
+                    // Moon icon header
+                    Image(systemName: AppIcons.sleep)
+                        .font(.system(size: 32))
+                        .foregroundStyle(AppTheme.Gradients.moon)
+                        .padding(.top, 8)
 
-                    Text("BPM")
-                        .font(.caption)
-                        .foregroundColor(.gray)
+                    // Current heart rate display
+                    VStack(spacing: 6) {
+                        Text("Frequência Cardíaca")
+                            .font(AppTheme.Typography.caption())
+                            .foregroundColor(AppTheme.Text.muted)
+                            .textCase(.uppercase)
+                            .tracking(1.2)
+
+                        HStack(alignment: .firstTextBaseline, spacing: 3) {
+                            Text("\(Int(heartRateMonitor.currentHeartRate))")
+                                .font(.system(size: 48, weight: .light, design: .rounded))
+                                .foregroundColor(heartRateColor)
+
+                            Text("BPM")
+                                .font(AppTheme.Typography.caption())
+                                .foregroundColor(AppTheme.Text.muted)
+                        }
+                    }
+
+                    // HRV display (if available)
+                    if let hrv = heartRateMonitor.currentHRV {
+                        HStack(spacing: 4) {
+                            Text("VFC:")
+                                .font(AppTheme.Typography.tiny())
+                                .foregroundColor(AppTheme.Text.muted)
+
+                            Text("\(Int(hrv)) ms")
+                                .font(AppTheme.Typography.caption(weight: .medium))
+                                .foregroundColor(AppTheme.Accent.mint)
+                        }
+                    }
+
+                    // Status indicator
+                    statusIndicator
+
+                    // Main action button
+                    Button(action: toggleMonitoring) {
+                        HStack(spacing: 6) {
+                            Image(systemName: heartRateMonitor.isMonitoring ? AppIcons.stop : AppIcons.play)
+                                .font(.system(size: 12))
+                            Text(heartRateMonitor.isMonitoring ? "Parar" : "Iniciar")
+                                .font(AppTheme.Typography.caption(weight: .semibold))
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 8)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .tint(heartRateMonitor.isMonitoring ? AppTheme.Accent.rose : AppTheme.Accent.mint)
+
+                    // Session info
+                    if heartRateMonitor.isMonitoring {
+                        sessionInfo
+                    }
                 }
-            }
-
-            // HRV display (if available)
-            if let hrv = heartRateMonitor.currentHRV {
-                HStack(spacing: 4) {
-                    Text("HRV:")
-                        .font(.caption)
-                        .foregroundColor(.gray)
-
-                    Text("\(Int(hrv)) ms")
-                        .font(.caption)
-                        .foregroundColor(.white)
-                }
-            }
-
-            // Status indicator
-            statusIndicator
-
-            // Main action button
-            Button(action: toggleMonitoring) {
-                Text(heartRateMonitor.isMonitoring ? "Stop Monitoring" : "Start Monitoring")
-                    .font(.caption)
-                    .fontWeight(.semibold)
-            }
-            .buttonStyle(.borderedProminent)
-            .tint(heartRateMonitor.isMonitoring ? .red : .green)
-
-            // Session info
-            if heartRateMonitor.isMonitoring {
-                sessionInfo
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
             }
         }
-        .padding()
-        .alert("Error", isPresented: $showError) {
+        .alert("Erro", isPresented: $showError) {
             Button("OK", role: .cancel) { }
         } message: {
             Text(errorMessage)
@@ -72,58 +94,69 @@ struct MonitoringView: View {
 
     private var statusIndicator: some View {
         HStack(spacing: 6) {
-            Circle()
-                .fill(heartRateMonitor.isMonitoring ? Color.green : Color.gray)
-                .frame(width: 8, height: 8)
+            if heartRateMonitor.isMonitoring {
+                BreathingCircle(color: AppTheme.Accent.mint, size: 6)
+            } else {
+                Circle()
+                    .fill(AppTheme.Text.muted)
+                    .frame(width: 6, height: 6)
+            }
 
-            Text(heartRateMonitor.isMonitoring ? "Monitoring" : "Inactive")
-                .font(.caption2)
-                .foregroundColor(.gray)
+            Text(heartRateMonitor.isMonitoring ? "A Monitorizar" : "Inativo")
+                .font(AppTheme.Typography.tiny())
+                .foregroundColor(heartRateMonitor.isMonitoring ? AppTheme.Accent.mint : AppTheme.Text.muted)
         }
     }
 
     private var sessionInfo: some View {
-        VStack(spacing: 4) {
+        VStack(spacing: 8) {
             if let stats = heartRateMonitor.getStatistics() {
-                HStack {
+                HStack(spacing: 12) {
                     VStack(alignment: .leading, spacing: 2) {
-                        Text("Min")
-                            .font(.caption2)
-                            .foregroundColor(.gray)
+                        Text("Mín")
+                            .font(AppTheme.Typography.tiny())
+                            .foregroundColor(AppTheme.Text.muted)
                         Text("\(Int(stats.min))")
-                            .font(.caption)
-                            .fontWeight(.semibold)
+                            .font(AppTheme.Typography.caption(weight: .medium))
+                            .foregroundColor(AppTheme.Accent.lavender)
                     }
 
                     Spacer()
 
                     VStack(alignment: .center, spacing: 2) {
-                        Text("Avg")
-                            .font(.caption2)
-                            .foregroundColor(.gray)
+                        Text("Méd")
+                            .font(AppTheme.Typography.tiny())
+                            .foregroundColor(AppTheme.Text.muted)
                         Text("\(Int(stats.avg))")
-                            .font(.caption)
-                            .fontWeight(.semibold)
+                            .font(AppTheme.Typography.caption(weight: .medium))
+                            .foregroundColor(AppTheme.Text.primary)
                     }
 
                     Spacer()
 
                     VStack(alignment: .trailing, spacing: 2) {
-                        Text("Max")
-                            .font(.caption2)
-                            .foregroundColor(.gray)
+                        Text("Máx")
+                            .font(AppTheme.Typography.tiny())
+                            .foregroundColor(AppTheme.Text.muted)
                         Text("\(Int(stats.max))")
-                            .font(.caption)
-                            .fontWeight(.semibold)
+                            .font(AppTheme.Typography.caption(weight: .medium))
+                            .foregroundColor(AppTheme.Accent.rose)
                     }
                 }
-                .font(.system(.caption, design: .rounded))
+                .padding(8)
+                .background(Color.white.opacity(0.03))
+                .cornerRadius(8)
             }
 
             if let session = dataManager.currentSession {
-                Text("Events: \(session.detectedEvents.count)")
-                    .font(.caption2)
-                    .foregroundColor(.gray)
+                HStack {
+                    Image(systemName: AppIcons.alert)
+                        .font(.system(size: 10))
+                        .foregroundColor(AppTheme.Accent.chamomile)
+                    Text("Eventos: \(session.detectedEvents.count)")
+                        .font(AppTheme.Typography.tiny())
+                        .foregroundColor(AppTheme.Text.secondary)
+                }
             }
         }
         .padding(.top, 8)
@@ -132,11 +165,11 @@ struct MonitoringView: View {
     private var heartRateColor: Color {
         let hr = heartRateMonitor.currentHeartRate
         if hr > dataManager.settings.effectiveAbsoluteThreshold {
-            return .red
+            return AppTheme.Accent.rose
         } else if hr > dataManager.settings.effectiveAbsoluteThreshold * 0.8 {
-            return .orange
+            return AppTheme.Accent.chamomile
         } else {
-            return .green
+            return AppTheme.Accent.mint
         }
     }
 
