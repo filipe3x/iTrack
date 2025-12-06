@@ -197,10 +197,17 @@ struct MoonGlowIcon: View {
     var size: CGFloat = 48
 
     var body: some View {
-        Image(systemName: "moon.fill")
-            .font(.system(size: size))
-            .foregroundStyle(AppTheme.Gradients.moon)
-            .shadow(color: AppTheme.Accent.moon.opacity(glowIntensity), radius: 20)
+        if #available(watchOS 8.0, iOS 15.0, *) {
+            Image(systemName: "moon.fill")
+                .font(.system(size: size))
+                .foregroundStyle(AppTheme.Gradients.moon)
+                .shadow(color: AppTheme.Accent.moon.opacity(glowIntensity), radius: 20)
+        } else {
+            Image(systemName: "moon.fill")
+                .font(.system(size: size))
+                .foregroundColor(AppTheme.Accent.moon)
+                .shadow(color: AppTheme.Accent.moon.opacity(glowIntensity), radius: 20)
+        }
             .onAppear {
                 withAnimation(
                     Animation.easeInOut(duration: 4)

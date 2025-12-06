@@ -13,7 +13,7 @@ struct SettingsView: View {
     var body: some View {
         List {
             Section("Sensitivity") {
-                Picker("Preset", selection: $sensitivityPreset) {
+                Picker("Preset", selection: sensitivityPreset) {
                     ForEach(AppConfiguration.SensitivityPreset.allCases, id: \.self) { preset in
                         Text(preset.rawValue.capitalized)
                             .tag(preset)
@@ -22,12 +22,12 @@ struct SettingsView: View {
             }
 
             Section("Alerts") {
-                Toggle("Haptics", isOn: $haptics)
-                Toggle("Sound", isOn: $sound)
+                Toggle("Haptics", isOn: haptics)
+                Toggle("Sound", isOn: sound)
             }
 
             Section("Power") {
-                Toggle("Power Saving", isOn: $powerSaving)
+                Toggle("Power Saving", isOn: powerSaving)
             }
 
             Section {

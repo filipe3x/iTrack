@@ -210,7 +210,7 @@ struct ThemedIcon: View {
                 } else {
                     Image(systemName: icon)
                         .font(.system(size: size, weight: .light))
-                        .foregroundColor(AppTheme.Colors.accent)
+                        .foregroundColor(AppTheme.Accent.mint)
                 }
             } else {
                 Image(systemName: icon)
@@ -287,7 +287,6 @@ struct AppIcons_Previews: PreviewProvider {
                         .font(AppTheme.Typography.subtitle(weight: .medium))
                         .foregroundColor(AppTheme.Text.secondary)
                         .textCase(.uppercase)
-                        .kerning(1.2)
                 }
 
                 LazyVGrid(columns: [

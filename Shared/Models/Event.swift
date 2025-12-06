@@ -41,7 +41,7 @@ struct DetectionEvent: Codable, Identifiable {
     // Detection context
     let deltaFromBaseline: Double?
     let timeWindow: TimeInterval?
-    let wasMovementSuppressed: Bool
+    var wasMovementSuppressed: Bool
 
     init(
         id: UUID = UUID(),
