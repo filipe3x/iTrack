@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>iTrack</string>
+	<string>FixSleep</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -27,13 +27,13 @@
 
 	<!-- HealthKit Permissions -->
 	<key>NSHealthShareUsageDescription</key>
-	<string>iTrack needs access to your heart rate data to monitor nocturnal arousal events during sleep. This data stays on your device and is used only for detection and alerts.</string>
+	<string>FixSleep needs access to your heart rate data to monitor nocturnal arousal events during sleep. This data stays on your device and is used only for detection and alerts.</string>
 	<key>NSHealthUpdateUsageDescription</key>
-	<string>iTrack needs permission to record workout sessions to continuously monitor your heart rate during your sleep window.</string>
+	<string>FixSleep needs permission to record workout sessions to continuously monitor your heart rate during your sleep window.</string>
 
 	<!-- Motion Permissions -->
 	<key>NSMotionUsageDescription</key>
-	<string>iTrack uses motion data to filter out false positives from movement during sleep monitoring.</string>
+	<string>FixSleep uses motion data to filter out false positives from movement during sleep monitoring.</string>
 
 	<!-- Background Modes -->
 	<key>UIBackgroundModes</key>

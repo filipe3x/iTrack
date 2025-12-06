@@ -1,6 +1,6 @@
 //
-//  iTrackApp.swift
-//  iTrack
+//  FixSleepApp.swift
+//  FixSleep
 //
 //  Main app entry point for iOS
 //
@@ -8,7 +8,7 @@
 import SwiftUI
 
 @main
-struct iTrackApp: App {
+struct FixSleepApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
     var body: some Scene {

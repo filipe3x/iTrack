@@ -14,7 +14,21 @@ struct DashboardView: View {
     var body: some View {
         NavigationView {
             ScrollView {
-                VStack(spacing: 20) {
+                VStack(spacing: AppTheme.Spacing.xl) {
+                    // Header
+                    VStack(spacing: AppTheme.Spacing.sm) {
+                        MoonGlowIcon(size: 48)
+                        Text("FixSleep")
+                            .font(AppTheme.Typography.largeTitle())
+                            .foregroundColor(AppTheme.Text.primary)
+                        Text("Monitor de Arousal Noturno")
+                            .font(AppTheme.Typography.caption())
+                            .foregroundColor(AppTheme.Text.muted)
+                            .textCase(.uppercase)
+                            .tracking(1.5)
+                    }
+                    .padding(.top, AppTheme.Spacing.lg)
+
                     // Watch connection status
                     watchStatusCard
 
@@ -29,223 +43,177 @@ struct DashboardView: View {
                 }
                 .padding()
             }
-            .navigationTitle("Dashboard")
+            .navigationBarHidden(true)
+            .background(AppTheme.Background.deep)
         }
     }
 
     private var watchStatusCard: some View {
-        VStack(spacing: 12) {
-            HStack {
-                Image(systemName: "applewatch")
-                    .font(.title2)
-                    .foregroundColor(watchConnectivity.isWatchAppInstalled ? .green : .gray)
-
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Apple Watch")
-                        .font(.headline)
-
-                    Text(watchConnectivity.isWatchAppInstalled ? "Connected" : "Not Connected")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
-
-                Spacer()
-
-                if watchConnectivity.isWatchAppInstalled {
-                    Image(systemName: "checkmark.circle.fill")
-                        .foregroundColor(.green)
-                }
-            }
-
-            if !watchConnectivity.isWatchAppInstalled {
-                Text("Install iTrack on your Apple Watch to start monitoring")
-                    .font(.caption)
-                    .foregroundColor(.orange)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-            }
-        }
-        .padding()
-        .background(Color(.systemGray6))
-        .cornerRadius(12)
+        ThemeInfoCard(
+            icon: AppIcons.watch,
+            title: "Apple Watch",
+            subtitle: watchConnectivity.isWatchAppInstalled ? "Conectado" : "Desconectado",
+            description: watchConnectivity.isWatchAppInstalled
+                ? "O seu Apple Watch está sincronizado e pronto"
+                : "Instale FixSleep no Apple Watch para começar",
+            accentColor: watchConnectivity.isWatchAppInstalled
+                ? AppTheme.Accent.mint
+                : AppTheme.Accent.rose
+        )
     }
 
     private var sleepWindowCard: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                Image(systemName: "moon.fill")
-                    .font(.title2)
-                    .foregroundColor(.blue)
+        VStack(spacing: AppTheme.Spacing.md) {
+            ThemeSectionHeader(
+                "Janela de Sono",
+                subtitle: "Período de Monitorização",
+                icon: AppIcons.sleep
+            )
 
-                Text("Sleep Window")
-                    .font(.headline)
+            VStack(spacing: AppTheme.Spacing.md) {
+                ThemeValueRow(
+                    label: "Início",
+                    value: sleepStartTime,
+                    icon: "moon.fill",
+                    accentColor: AppTheme.Accent.lavender
+                )
 
-                Spacer()
-            }
+                Divider()
+                    .background(AppTheme.Border.subtle)
 
-            HStack(spacing: 20) {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Start")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
+                ThemeValueRow(
+                    label: "Fim",
+                    value: sleepEndTime,
+                    icon: "sunrise.fill",
+                    accentColor: AppTheme.Accent.chamomile
+                )
 
-                    Text(sleepStartTime)
-                        .font(.title3)
-                        .fontWeight(.semibold)
-                }
+                if dataManager.settings.isWithinSleepWindow() {
+                    Divider()
+                        .background(AppTheme.Border.subtle)
 
-                Image(systemName: "arrow.right")
-                    .foregroundColor(.secondary)
-
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("End")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-
-                    Text(sleepEndTime)
-                        .font(.title3)
-                        .fontWeight(.semibold)
-                }
-
-                Spacer()
-            }
-
-            if dataManager.settings.isWithinSleepWindow() {
-                HStack {
-                    Image(systemName: "circle.fill")
-                        .font(.caption)
-                        .foregroundColor(.green)
-
-                    Text("Currently in sleep window")
-                        .font(.caption)
-                        .foregroundColor(.green)
+                    HStack {
+                        BreathingCircle(color: AppTheme.Accent.mint, size: 8)
+                        Text("Dentro da janela de sono")
+                            .font(AppTheme.Typography.caption())
+                            .foregroundColor(AppTheme.Accent.mint)
+                        Spacer()
+                    }
                 }
             }
         }
-        .padding()
-        .background(Color(.systemGray6))
-        .cornerRadius(12)
+        .themeElevatedCard()
     }
 
     private var recentActivityCard: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(spacing: AppTheme.Spacing.md) {
             HStack {
-                Image(systemName: "chart.bar.fill")
-                    .font(.title2)
-                    .foregroundColor(.purple)
-
-                Text("Recent Activity")
-                    .font(.headline)
+                ThemeSectionHeader(
+                    "Atividade Recente",
+                    icon: AppIcons.chart
+                )
 
                 Spacer()
 
                 NavigationLink(destination: EventLogView()) {
-                    Text("View All")
-                        .font(.caption)
-                        .foregroundColor(.blue)
+                    Text("Ver Tudo")
+                        .font(AppTheme.Typography.caption(weight: .medium))
+                        .foregroundColor(AppTheme.Accent.lavender)
                 }
             }
 
             if dataManager.recentEvents.isEmpty {
-                VStack(spacing: 8) {
-                    Image(systemName: "moon.stars")
-                        .font(.largeTitle)
-                        .foregroundColor(.gray)
-
-                    Text("No recent events")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                }
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 20)
+                ThemeEmptyState(
+                    icon: AppIcons.sleeping,
+                    title: "Sem Eventos",
+                    message: "Nenhum arousal detetado recentemente"
+                )
             } else {
-                VStack(spacing: 8) {
-                    statsRow(
-                        title: "Today's Events",
-                        value: todayEventCount,
-                        icon: "bell.fill",
-                        color: .orange
+                VStack(spacing: AppTheme.Spacing.md) {
+                    ThemeValueRow(
+                        label: "Eventos Hoje",
+                        value: "\(todayEventCount)",
+                        icon: AppIcons.alert,
+                        accentColor: AppTheme.Accent.chamomile
                     )
 
-                    statsRow(
-                        title: "This Week",
-                        value: weekEventCount,
-                        icon: "calendar",
-                        color: .blue
+                    Divider()
+                        .background(AppTheme.Border.subtle)
+
+                    ThemeValueRow(
+                        label: "Esta Semana",
+                        value: "\(weekEventCount)",
+                        icon: AppIcons.schedule,
+                        accentColor: AppTheme.Accent.lavender
                     )
 
                     if let lastEvent = dataManager.recentEvents.last {
                         Divider()
+                            .background(AppTheme.Border.subtle)
 
                         HStack {
                             VStack(alignment: .leading, spacing: 4) {
-                                Text("Last Event")
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
+                                Text("Último Evento")
+                                    .font(AppTheme.Typography.caption())
+                                    .foregroundColor(AppTheme.Text.muted)
 
                                 Text(lastEvent.detectionType.rawValue)
-                                    .font(.subheadline)
-                                    .fontWeight(.medium)
+                                    .font(AppTheme.Typography.body(weight: .medium))
+                                    .foregroundColor(AppTheme.Text.primary)
                             }
 
                             Spacer()
 
                             Text(formatRelativeTime(lastEvent.timestamp))
-                                .font(.caption)
-                                .foregroundColor(.secondary)
+                                .font(AppTheme.Typography.caption())
+                                .foregroundColor(AppTheme.Text.secondary)
                         }
                     }
                 }
             }
         }
-        .padding()
-        .background(Color(.systemGray6))
-        .cornerRadius(12)
+        .themeCard()
     }
 
     private var quickActionsCard: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("Quick Actions")
-                .font(.headline)
+        VStack(spacing: AppTheme.Spacing.md) {
+            ThemeSectionHeader("Ações Rápidas")
 
-            VStack(spacing: 12) {
+            VStack(spacing: AppTheme.Spacing.sm) {
                 NavigationLink(destination: SettingsView()) {
-                    QuickActionButton(
-                        icon: "slider.horizontal.3",
-                        title: "Adjust Sensitivity",
-                        color: .blue
-                    )
+                    HStack {
+                        ThemedIcon(AppIcons.settings, size: 18, color: AppTheme.Accent.lavender)
+                        Text("Ajustar Sensibilidade")
+                            .font(AppTheme.Typography.body())
+                            .foregroundColor(AppTheme.Text.primary)
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                            .font(.system(size: 12))
+                            .foregroundColor(AppTheme.Text.muted)
+                    }
+                    .padding(AppTheme.Spacing.md)
+                    .background(Color.white.opacity(0.03))
+                    .cornerRadius(AppTheme.CornerRadius.md)
                 }
 
                 NavigationLink(destination: EventLogView()) {
-                    QuickActionButton(
-                        icon: "square.and.arrow.up",
-                        title: "Export Event Log",
-                        color: .green
-                    )
+                    HStack {
+                        ThemedIcon(AppIcons.export, size: 18, color: AppTheme.Accent.mint)
+                        Text("Exportar Eventos")
+                            .font(AppTheme.Typography.body())
+                            .foregroundColor(AppTheme.Text.primary)
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                            .font(.system(size: 12))
+                            .foregroundColor(AppTheme.Text.muted)
+                    }
+                    .padding(AppTheme.Spacing.md)
+                    .background(Color.white.opacity(0.03))
+                    .cornerRadius(AppTheme.CornerRadius.md)
                 }
             }
         }
-        .padding()
-        .background(Color(.systemGray6))
-        .cornerRadius(12)
-    }
-
-    // MARK: - Helper Views
-
-    private func statsRow(title: String, value: Int, icon: String, color: Color) -> some View {
-        HStack {
-            Image(systemName: icon)
-                .foregroundColor(color)
-
-            Text(title)
-                .font(.subheadline)
-
-            Spacer()
-
-            Text("\(value)")
-                .font(.headline)
-                .fontWeight(.semibold)
-        }
+        .themeCard()
     }
 
     // MARK: - Computed Properties
@@ -300,36 +268,9 @@ struct DashboardView: View {
     }
 }
 
-struct QuickActionButton: View {
-    let icon: String
-    let title: String
-    let color: Color
-
-    var body: some View {
-        HStack {
-            Image(systemName: icon)
-                .font(.title3)
-                .foregroundColor(color)
-                .frame(width: 30)
-
-            Text(title)
-                .font(.body)
-                .foregroundColor(.primary)
-
-            Spacer()
-
-            Image(systemName: "chevron.right")
-                .font(.caption)
-                .foregroundColor(.secondary)
-        }
-        .padding()
-        .background(Color(.systemBackground))
-        .cornerRadius(8)
-    }
-}
-
 struct DashboardView_Previews: PreviewProvider {
     static var previews: some View {
         DashboardView()
+            .preferredColorScheme(.dark)
     }
 }
