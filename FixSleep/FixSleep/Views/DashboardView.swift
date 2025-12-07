@@ -25,7 +25,6 @@ struct DashboardView: View {
                             .font(AppTheme.Typography.caption())
                             .foregroundColor(AppTheme.Text.muted)
                             .textCase(.uppercase)
-                            .kerning(1.5)
                     }
                     .padding(.top, AppTheme.Spacing.lg)
 

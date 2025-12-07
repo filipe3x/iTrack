@@ -81,9 +81,9 @@ struct SettingsView: View {
 
     private var alertsSection: some View {
         Section {
-            Toggle("Haptic Feedback", isOn: $enableHaptics)
-            Toggle("Audible Alarm", isOn: $enableSound)
-            Toggle("iPhone Notifications", isOn: $notificationsEnabled)
+            Toggle("Haptic Feedback", isOn: enableHaptics)
+            Toggle("Audible Alarm", isOn: enableSound)
+            Toggle("iPhone Notifications", isOn: notificationsEnabled)
         } header: {
             Text("Alerts & Notifications")
         } footer: {
@@ -93,7 +93,7 @@ struct SettingsView: View {
 
     private var powerSection: some View {
         Section {
-            Toggle("Power Saving Mode", isOn: $powerSavingMode)
+            Toggle("Power Saving Mode", isOn: powerSavingMode)
 
             VStack(alignment: .leading, spacing: 4) {
                 Text("Battery Impact")
@@ -112,8 +112,8 @@ struct SettingsView: View {
 
     private var dataSection: some View {
         Section {
-            Toggle("Cloud Sync", isOn: $cloudSync)
-            Toggle("Anonymized Telemetry", isOn: $telemetry)
+            Toggle("Cloud Sync", isOn: cloudSync)
+            Toggle("Anonymized Telemetry", isOn: telemetry)
 
             HStack {
                 Text("Data Retention")
