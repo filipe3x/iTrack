@@ -36,26 +36,30 @@ struct EventLogView: View {
                         .foregroundColor(.blue)
                     }
 
-                    Button(role: .destructive, action: clearAllEvents) {
+                    Button(action: clearAllEvents) {
                         HStack {
                             Image(systemName: "trash")
                             Text("Clear All Events")
                         }
+                        .foregroundColor(.red)
                     }
                 }
             }
         }
         .navigationTitle("Event Log")
-        .confirmationDialog("Export Format", isPresented: $showExportOptions) {
-            Button("Export as JSON") {
-                exportAsJSON()
-            }
-
-            Button("Export as CSV") {
-                exportAsCSV()
-            }
-
-            Button("Cancel", role: .cancel) { }
+        .actionSheet(isPresented: $showExportOptions) {
+            ActionSheet(
+                title: Text("Export Format"),
+                buttons: [
+                    .default(Text("Export as JSON")) {
+                        exportAsJSON()
+                    },
+                    .default(Text("Export as CSV")) {
+                        exportAsCSV()
+                    },
+                    .cancel()
+                ]
+            )
         }
         .sheet(isPresented: $showShareSheet) {
             ShareSheet(items: [exportData])

@@ -228,42 +228,66 @@ struct SettingsView: View {
     private var enableHaptics: Binding<Bool> {
         Binding(
             get: { dataManager.settings.enableHaptics },
-            set: { dataManager.updateSettings { $0.enableHaptics = $1 } }
+            set: { newValue in
+                dataManager.updateSettings { settings in
+                    settings.enableHaptics = newValue
+                }
+            }
         )
     }
 
     private var enableSound: Binding<Bool> {
         Binding(
             get: { dataManager.settings.enableAudibleAlarm },
-            set: { dataManager.updateSettings { $0.enableAudibleAlarm = $1 } }
+            set: { newValue in
+                dataManager.updateSettings { settings in
+                    settings.enableAudibleAlarm = newValue
+                }
+            }
         )
     }
 
     private var notificationsEnabled: Binding<Bool> {
         Binding(
             get: { dataManager.settings.notificationsEnabled },
-            set: { dataManager.updateSettings { $0.notificationsEnabled = $1 } }
+            set: { newValue in
+                dataManager.updateSettings { settings in
+                    settings.notificationsEnabled = newValue
+                }
+            }
         )
     }
 
     private var powerSavingMode: Binding<Bool> {
         Binding(
             get: { dataManager.settings.enablePowerSavingMode },
-            set: { dataManager.updateSettings { $0.enablePowerSavingMode = $1 } }
+            set: { newValue in
+                dataManager.updateSettings { settings in
+                    settings.enablePowerSavingMode = newValue
+                }
+            }
         )
     }
 
     private var cloudSync: Binding<Bool> {
         Binding(
             get: { dataManager.settings.enableCloudSync },
-            set: { dataManager.updateSettings { $0.enableCloudSync = $1 } }
+            set: { newValue in
+                dataManager.updateSettings { settings in
+                    settings.enableCloudSync = newValue
+                }
+            }
         )
     }
 
     private var telemetry: Binding<Bool> {
         Binding(
             get: { dataManager.settings.enableTelemetry },
-            set: { dataManager.updateSettings { $0.enableTelemetry = $1 } }
+            set: { newValue in
+                dataManager.updateSettings { settings in
+                    settings.enableTelemetry = newValue
+                }
+            }
         )
     }
 
