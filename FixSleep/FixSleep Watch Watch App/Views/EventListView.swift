@@ -14,9 +14,15 @@ struct EventListView: View {
         List {
             if dataManager.recentEvents.isEmpty {
                 VStack(spacing: 12) {
-                    Image(systemName: "moon.stars.fill")
-                        .font(.system(size: 32))
-                        .foregroundStyle(AppTheme.Gradients.moon)
+                    if #available(watchOS 8.0, *) {
+                        Image(systemName: "moon.stars.fill")
+                            .font(.system(size: 32))
+                            .foregroundStyle(AppTheme.Gradients.moon)
+                    } else {
+                        Image(systemName: "moon.stars.fill")
+                            .font(.system(size: 32))
+                            .foregroundColor(AppTheme.Accent.moon)
+                    }
 
                     Text("Sem Eventos")
                         .font(AppTheme.Typography.caption(weight: .medium))

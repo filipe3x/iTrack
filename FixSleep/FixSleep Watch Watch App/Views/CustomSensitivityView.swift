@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CustomSensitivityView: View {
     @ObservedObject private var dataManager = DataManager.shared
-    @Environment(\.dismiss) private var dismiss
+    @Environment(\.presentationMode) private var presentationMode
 
     @State private var absoluteThreshold: Double
     @State private var relativeDelta: Double
@@ -25,9 +25,15 @@ struct CustomSensitivityView: View {
             VStack(spacing: 16) {
                 // Header
                 VStack(spacing: 4) {
-                    Image(systemName: "slider.horizontal.3")
-                        .font(.system(size: 24))
-                        .foregroundStyle(AppTheme.Gradients.moon)
+                    if #available(watchOS 8.0, *) {
+                        Image(systemName: "slider.horizontal.3")
+                            .font(.system(size: 24))
+                            .foregroundStyle(AppTheme.Gradients.moon)
+                    } else {
+                        Image(systemName: "slider.horizontal.3")
+                            .font(.system(size: 24))
+                            .foregroundColor(AppTheme.Accent.lavender)
+                    }
 
                     Text("Sensibilidade Personalizada")
                         .font(AppTheme.Typography.caption(weight: .medium))
@@ -159,7 +165,7 @@ struct CustomSensitivityView: View {
             settings.customRelativeDelta = relativeDelta
             settings.sensitivityPreset = .custom
         }
-        dismiss()
+        presentationMode.wrappedValue.dismiss()
     }
 }
 
