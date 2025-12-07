@@ -26,12 +26,13 @@ struct MonitoringView: View {
                         Image(systemName: AppIcons.sleep)
                             .font(.system(size: 32))
                             .foregroundStyle(AppTheme.Gradients.moon)
+                            .padding(.top, 8)
                     } else {
                         Image(systemName: AppIcons.sleep)
                             .font(.system(size: 32))
                             .foregroundColor(AppTheme.Accent.mint)
+                            .padding(.top, 8)
                     }
-                        .padding(.top, 8)
 
                     // Current heart rate display
                     VStack(spacing: 6) {

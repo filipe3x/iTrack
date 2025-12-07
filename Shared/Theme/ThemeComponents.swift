@@ -357,9 +357,15 @@ struct ThemeEmptyState: View {
 
     var body: some View {
         VStack(spacing: AppTheme.Spacing.lg) {
-            Image(systemName: icon)
-                .font(.system(size: 48, weight: .light))
-                .foregroundStyle(AppTheme.Gradients.moon)
+            if #available(watchOS 8.0, iOS 15.0, *) {
+                Image(systemName: icon)
+                    .font(.system(size: 48, weight: .light))
+                    .foregroundStyle(AppTheme.Gradients.moon)
+            } else {
+                Image(systemName: icon)
+                    .font(.system(size: 48, weight: .light))
+                    .foregroundColor(AppTheme.Accent.lavender)
+            }
 
             VStack(spacing: AppTheme.Spacing.xs) {
                 Text(title)

@@ -68,7 +68,7 @@ class HealthKitManager: ObservableObject {
                     } else if success {
                         continuation.resume()
                     } else {
-                        continuation.resume(throwing: HealthKitError.authorizationDenied)
+                        continuation.resume(throwing: HealthKitError.notAuthorized)
                     }
                 }
             }
