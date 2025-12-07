@@ -29,7 +29,7 @@ struct AppConfiguration {
 
     // MARK: - Sensitivity Presets
 
-    enum SensitivityPreset: String, CaseIterable {
+    enum SensitivityPreset: String, CaseIterable, Codable {
         case low
         case medium
         case high

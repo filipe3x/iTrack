@@ -203,9 +203,15 @@ struct ThemedIcon: View {
     var body: some View {
         Group {
             if gradient {
-                Image(systemName: icon)
-                    .font(.system(size: size, weight: .light))
-                    .foregroundStyle(AppTheme.Gradients.moon)
+                if #available(watchOS 8.0, iOS 15.0, *) {
+                    Image(systemName: icon)
+                        .font(.system(size: size, weight: .light))
+                        .foregroundStyle(AppTheme.Gradients.moon)
+                } else {
+                    Image(systemName: icon)
+                        .font(.system(size: size, weight: .light))
+                        .foregroundColor(AppTheme.Accent.mint)
+                }
             } else {
                 Image(systemName: icon)
                     .font(.system(size: size, weight: .light))
@@ -270,11 +276,18 @@ struct AppIcons_Previews: PreviewProvider {
 
         var body: some View {
             VStack(alignment: .leading, spacing: AppTheme.Spacing.md) {
-                Text(title)
-                    .font(AppTheme.Typography.subtitle(weight: .medium))
-                    .foregroundColor(AppTheme.Text.secondary)
-                    .textCase(.uppercase)
-                    .tracking(1.2)
+                if #available(watchOS 9.0, iOS 16.0, *) {
+                    Text(title)
+                        .font(AppTheme.Typography.subtitle(weight: .medium))
+                        .foregroundColor(AppTheme.Text.secondary)
+                        .textCase(.uppercase)
+                        .tracking(1.2)
+                } else {
+                    Text(title)
+                        .font(AppTheme.Typography.subtitle(weight: .medium))
+                        .foregroundColor(AppTheme.Text.secondary)
+                        .textCase(.uppercase)
+                }
 
                 LazyVGrid(columns: [
                     GridItem(.flexible()),

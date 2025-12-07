@@ -14,7 +14,7 @@
 		773019C72EE4BD160033EB26 /* FixSleepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773019C62EE4BD160033EB26 /* FixSleepTests.swift */; };
 		773019D12EE4BD160033EB26 /* FixSleepUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773019D02EE4BD160033EB26 /* FixSleepUITests.swift */; };
 		773019D32EE4BD160033EB26 /* FixSleepUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773019D22EE4BD160033EB26 /* FixSleepUITestsLaunchTests.swift */; };
-		773019E62EE4BEA90033EB26 /* FixSleep_WatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773019E52EE4BEA90033EB26 /* FixSleep_WatchApp.swift */; };
+		773019E62EE4BEA90033EB26 /* FixSleepWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773019E52EE4BEA90033EB26 /* FixSleepWatchApp.swift */; };
 		773019E82EE4BEA90033EB26 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773019E72EE4BEA90033EB26 /* ContentView.swift */; };
 		773019EA2EE4BEAB0033EB26 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 773019E92EE4BEAB0033EB26 /* Assets.xcassets */; };
 		773019ED2EE4BEAB0033EB26 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 773019EC2EE4BEAB0033EB26 /* Preview Assets.xcassets */; };
@@ -41,6 +41,13 @@
 		774B4AA52EE4CC50009FB253 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4A922EE4CC50009FB253 /* DataManager.swift */; };
 		774B4AA62EE4CC50009FB253 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4A932EE4CC50009FB253 /* HealthKitManager.swift */; };
 		774B4AA72EE4CC50009FB253 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4A932EE4CC50009FB253 /* HealthKitManager.swift */; };
+		774B4AC12EE4CC50009FB253 /* MonitoringView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4AB12EE4CC50009FB253 /* MonitoringView.swift */; };
+		774B4AC22EE4CC50009FB253 /* EventListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4AB22EE4CC50009FB253 /* EventListView.swift */; };
+		774B4AC32EE4CC50009FB253 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4AB32EE4CC50009FB253 /* SettingsView.swift */; };
+		774B4AC42EE4CC50009FB253 /* HeartRateMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4AB42EE4CC50009FB253 /* HeartRateMonitor.swift */; };
+		774B4AC52EE4CC50009FB253 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4AB52EE4CC50009FB253 /* ExtensionDelegate.swift */; };
+		774B4AC62EE4CC50009FB253 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4AB62EE4CC50009FB253 /* HapticManager.swift */; };
+		774B4AC72EE4CC50009FB253 /* DetectionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4AB72EE4CC50009FB253 /* DetectionEngine.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,7 +93,7 @@
 		773019D02EE4BD160033EB26 /* FixSleepUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixSleepUITests.swift; sourceTree = "<group>"; };
 		773019D22EE4BD160033EB26 /* FixSleepUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixSleepUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		773019E32EE4BEA80033EB26 /* FixSleep Watch Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FixSleep Watch Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		773019E52EE4BEA90033EB26 /* FixSleep_WatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixSleep_WatchApp.swift; sourceTree = "<group>"; };
+		773019E52EE4BEA90033EB26 /* FixSleepWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixSleepWatchApp.swift; sourceTree = "<group>"; };
 		773019E72EE4BEA90033EB26 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		773019E92EE4BEAB0033EB26 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		773019EC2EE4BEAB0033EB26 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -109,6 +116,13 @@
 		774B4AA92EE4CECC009FB253 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		774B4AAA2EE4CF2C009FB253 /* FixSleep Watch Watch App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "FixSleep Watch Watch App.entitlements"; sourceTree = "<group>"; };
 		774B4AAB2EE4CF66009FB253 /* FixSleep-Watch-Watch-App-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "FixSleep-Watch-Watch-App-Info.plist"; sourceTree = SOURCE_ROOT; };
+		774B4AB12EE4CC50009FB253 /* MonitoringView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitoringView.swift; sourceTree = "<group>"; };
+		774B4AB22EE4CC50009FB253 /* EventListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventListView.swift; sourceTree = "<group>"; };
+		774B4AB32EE4CC50009FB253 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		774B4AB42EE4CC50009FB253 /* HeartRateMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartRateMonitor.swift; sourceTree = "<group>"; };
+		774B4AB52EE4CC50009FB253 /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
+		774B4AB62EE4CC50009FB253 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
+		774B4AB72EE4CC50009FB253 /* DetectionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetectionEngine.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -227,12 +241,35 @@
 			children = (
 				774B4AAB2EE4CF66009FB253 /* FixSleep-Watch-Watch-App-Info.plist */,
 				774B4AAA2EE4CF2C009FB253 /* FixSleep Watch Watch App.entitlements */,
-				773019E52EE4BEA90033EB26 /* FixSleep_WatchApp.swift */,
+				773019E52EE4BEA90033EB26 /* FixSleepWatchApp.swift */,
 				773019E72EE4BEA90033EB26 /* ContentView.swift */,
+				774B4AB82EE4CC50009FB253 /* Views */,
+				774B4AB92EE4CC50009FB253 /* Services */,
 				773019E92EE4BEAB0033EB26 /* Assets.xcassets */,
 				773019EB2EE4BEAB0033EB26 /* Preview Content */,
 			);
 			path = "FixSleep Watch Watch App";
+			sourceTree = "<group>";
+		};
+		774B4AB82EE4CC50009FB253 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				774B4AB12EE4CC50009FB253 /* MonitoringView.swift */,
+				774B4AB22EE4CC50009FB253 /* EventListView.swift */,
+				774B4AB32EE4CC50009FB253 /* SettingsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		774B4AB92EE4CC50009FB253 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				774B4AB42EE4CC50009FB253 /* HeartRateMonitor.swift */,
+				774B4AB52EE4CC50009FB253 /* ExtensionDelegate.swift */,
+				774B4AB62EE4CC50009FB253 /* HapticManager.swift */,
+				774B4AB72EE4CC50009FB253 /* DetectionEngine.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 		773019EB2EE4BEAB0033EB26 /* Preview Content */ = {
@@ -573,7 +610,14 @@
 				774B4AA12EE4CC50009FB253 /* AppTheme.swift in Sources */,
 				774B4A952EE4CC50009FB253 /* AppConfiguration.swift in Sources */,
 				773019E82EE4BEA90033EB26 /* ContentView.swift in Sources */,
-				773019E62EE4BEA90033EB26 /* FixSleep_WatchApp.swift in Sources */,
+				773019E62EE4BEA90033EB26 /* FixSleepWatchApp.swift in Sources */,
+				774B4AC12EE4CC50009FB253 /* MonitoringView.swift in Sources */,
+				774B4AC22EE4CC50009FB253 /* EventListView.swift in Sources */,
+				774B4AC32EE4CC50009FB253 /* SettingsView.swift in Sources */,
+				774B4AC42EE4CC50009FB253 /* HeartRateMonitor.swift in Sources */,
+				774B4AC52EE4CC50009FB253 /* ExtensionDelegate.swift in Sources */,
+				774B4AC62EE4CC50009FB253 /* HapticManager.swift in Sources */,
+				774B4AC72EE4CC50009FB253 /* DetectionEngine.swift in Sources */,
 				774B4A9F2EE4CC50009FB253 /* AppIcons.swift in Sources */,
 				774B4AA52EE4CC50009FB253 /* DataManager.swift in Sources */,
 				774B4A9D2EE4CC50009FB253 /* BackgroundEffects.swift in Sources */,
@@ -889,13 +933,13 @@
 				INFOPLIST_FILE = "FixSleep-Watch-Watch-App-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "FixSleep Watch";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = brasume.com.FixSleep;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = FixSleepWatch;
+				PRODUCT_BUNDLE_IDENTIFIER = brasume.com.FixSleep.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -921,13 +965,13 @@
 				INFOPLIST_FILE = "FixSleep-Watch-Watch-App-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "FixSleep Watch";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = brasume.com.FixSleep;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = FixSleepWatch;
+				PRODUCT_BUNDLE_IDENTIFIER = brasume.com.FixSleep.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;

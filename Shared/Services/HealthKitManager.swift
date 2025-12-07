@@ -57,7 +57,23 @@ class HealthKitManager: ObservableObject {
             throw HealthKitError.notAvailable
         }
 
-        try await healthStore.requestAuthorization(toShare: typesToWrite, read: typesToRead)
+        if #available(watchOS 8.0, iOS 15.0, *) {
+            try await healthStore.requestAuthorization(toShare: typesToWrite, read: typesToRead)
+        } else {
+            // Fallback for watchOS 7.0
+            try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+                healthStore.requestAuthorization(toShare: typesToWrite, read: typesToRead) { success, error in
+                    if let error = error {
+                        continuation.resume(throwing: error)
+                    } else if success {
+                        continuation.resume()
+                    } else {
+                        continuation.resume(throwing: HealthKitError.notAuthorized)
+                    }
+                }
+            }
+        }
+
         await MainActor.run {
             self.isAuthorized = true
         }

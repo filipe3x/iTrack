@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct MonitoringView: View {
-    @StateObject private var heartRateMonitor = HeartRateMonitor.shared
-    @StateObject private var dataManager = DataManager.shared
+    @ObservedObject private var heartRateMonitor = HeartRateMonitor.shared
+    @ObservedObject private var dataManager = DataManager.shared
     @State private var showError = false
     @State private var errorMessage = ""
 
@@ -22,18 +22,31 @@ struct MonitoringView: View {
             ScrollView {
                 VStack(spacing: 12) {
                     // Moon icon header
-                    Image(systemName: AppIcons.sleep)
-                        .font(.system(size: 32))
-                        .foregroundStyle(AppTheme.Gradients.moon)
-                        .padding(.top, 8)
+                    if #available(watchOS 8.0, *) {
+                        Image(systemName: AppIcons.sleep)
+                            .font(.system(size: 32))
+                            .foregroundStyle(AppTheme.Gradients.moon)
+                            .padding(.top, 8)
+                    } else {
+                        Image(systemName: AppIcons.sleep)
+                            .font(.system(size: 32))
+                            .foregroundColor(AppTheme.Accent.mint)
+                            .padding(.top, 8)
+                    }
 
                     // Current heart rate display
                     VStack(spacing: 6) {
-                        Text("Frequência Cardíaca")
-                            .font(AppTheme.Typography.caption())
-                            .foregroundColor(AppTheme.Text.muted)
-                            .textCase(.uppercase)
-                            .tracking(1.2)
+                        if #available(watchOS 9.0, *) {
+                            Text("Frequência Cardíaca")
+                                .font(AppTheme.Typography.caption())
+                                .foregroundColor(AppTheme.Text.muted)
+                                .textCase(.uppercase)
+                        } else {
+                            Text("Frequência Cardíaca")
+                                .font(AppTheme.Typography.caption())
+                                .foregroundColor(AppTheme.Text.muted)
+                                .textCase(.uppercase)
+                        }
 
                         HStack(alignment: .firstTextBaseline, spacing: 3) {
                             Text("\(Int(heartRateMonitor.currentHeartRate))")
@@ -73,8 +86,7 @@ struct MonitoringView: View {
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 8)
                     }
-                    .buttonStyle(.borderedProminent)
-                    .tint(heartRateMonitor.isMonitoring ? AppTheme.Accent.rose : AppTheme.Accent.mint)
+                    .accentColor(heartRateMonitor.isMonitoring ? AppTheme.Accent.rose : AppTheme.Accent.mint)
 
                     // Session info
                     if heartRateMonitor.isMonitoring {
@@ -85,10 +97,12 @@ struct MonitoringView: View {
                 .padding(.vertical, 4)
             }
         }
-        .alert("Erro", isPresented: $showError) {
-            Button("OK", role: .cancel) { }
-        } message: {
-            Text(errorMessage)
+        .alert(isPresented: $showError) {
+            Alert(
+                title: Text("Erro"),
+                message: Text(errorMessage),
+                dismissButton: .default(Text("OK"))
+            )
         }
     }
 

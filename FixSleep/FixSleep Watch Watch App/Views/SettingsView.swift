@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @StateObject private var dataManager = DataManager.shared
+    @ObservedObject private var dataManager = DataManager.shared
 
     var body: some View {
         List {
-            Section("Sensitivity") {
-                Picker("Preset", selection: $sensitivityPreset) {
+            Section(header: Text("Sensitivity")) {
+                Picker("Preset", selection: sensitivityPreset) {
                     ForEach(AppConfiguration.SensitivityPreset.allCases, id: \.self) { preset in
                         Text(preset.rawValue.capitalized)
                             .tag(preset)
@@ -21,13 +21,13 @@ struct SettingsView: View {
                 }
             }
 
-            Section("Alerts") {
-                Toggle("Haptics", isOn: $haptics)
-                Toggle("Sound", isOn: $sound)
+            Section(header: Text("Alerts")) {
+                Toggle("Haptics", isOn: haptics)
+                Toggle("Sound", isOn: sound)
             }
 
-            Section("Power") {
-                Toggle("Power Saving", isOn: $powerSaving)
+            Section(header: Text("Power")) {
+                Toggle("Power Saving", isOn: powerSaving)
             }
 
             Section {

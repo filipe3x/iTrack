@@ -216,8 +216,9 @@ extension HeartRateMonitor: HKLiveWorkoutBuilderDelegate {
     func workoutBuilder(_ workoutBuilder: HKLiveWorkoutBuilder, didCollectDataOf collectedTypes: Set<HKSampleType>) {
         // Process collected data
         for type in collectedTypes {
-            if type == HKQuantityType.quantityType(forIdentifier: .heartRate) {
-                processHeartRateStatistics(workoutBuilder.statistics(for: type))
+            if type == HKQuantityType.quantityType(forIdentifier: .heartRate),
+               let quantityType = type as? HKQuantityType {
+                processHeartRateStatistics(workoutBuilder.statistics(for: quantityType))
             }
         }
     }

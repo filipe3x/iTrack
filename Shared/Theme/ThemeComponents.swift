@@ -25,15 +25,28 @@ struct ThemeSectionHeader: View {
         VStack(alignment: .leading, spacing: AppTheme.Spacing.sm) {
             HStack(spacing: AppTheme.Spacing.md) {
                 if let icon = icon {
-                    Image(systemName: icon)
-                        .font(.system(size: 24))
-                        .foregroundStyle(AppTheme.Gradients.moon)
+                    if #available(watchOS 8.0, iOS 15.0, *) {
+
+                        Image(systemName: icon)
+
+                            .font(.system(size: 24))
+
+                            .foregroundStyle(AppTheme.Gradients.moon)
+
+                    } else {
+
+                        Image(systemName: icon)
+
+                            .font(.system(size: 24))
+
+                            .foregroundColor(AppTheme.Accent.lavender)
+
+                    }
                 }
 
                 Text(title)
                     .font(AppTheme.Typography.title())
                     .foregroundColor(AppTheme.Text.primary)
-                    .tracking(0.5)
             }
 
             if let subtitle = subtitle {
@@ -41,7 +54,6 @@ struct ThemeSectionHeader: View {
                     .font(AppTheme.Typography.caption())
                     .foregroundColor(AppTheme.Text.muted)
                     .textCase(.uppercase)
-                    .tracking(1.5)
             }
         }
     }
@@ -140,7 +152,6 @@ struct ThemeStatusBadge: View {
             Text(text)
                 .font(AppTheme.Typography.tiny(weight: .medium))
                 .textCase(.uppercase)
-                .tracking(0.8)
         }
         .foregroundColor(color)
         .padding(.horizontal, AppTheme.Spacing.sm)
@@ -192,7 +203,6 @@ struct TimelineStep: View {
                     .font(AppTheme.Typography.tiny())
                     .foregroundColor(AppTheme.Text.muted)
                     .textCase(.uppercase)
-                    .tracking(0.8)
             }
             .frame(width: 60, alignment: .trailing)
 
@@ -347,9 +357,15 @@ struct ThemeEmptyState: View {
 
     var body: some View {
         VStack(spacing: AppTheme.Spacing.lg) {
-            Image(systemName: icon)
-                .font(.system(size: 48, weight: .light))
-                .foregroundStyle(AppTheme.Gradients.moon)
+            if #available(watchOS 8.0, iOS 15.0, *) {
+                Image(systemName: icon)
+                    .font(.system(size: 48, weight: .light))
+                    .foregroundStyle(AppTheme.Gradients.moon)
+            } else {
+                Image(systemName: icon)
+                    .font(.system(size: 48, weight: .light))
+                    .foregroundColor(AppTheme.Accent.lavender)
+            }
 
             VStack(spacing: AppTheme.Spacing.xs) {
                 Text(title)

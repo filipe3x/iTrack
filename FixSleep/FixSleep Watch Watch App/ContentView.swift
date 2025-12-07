@@ -8,27 +8,18 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject private var heartRateMonitor = HeartRateMonitor.shared
-    @StateObject private var dataManager = DataManager.shared
+    @ObservedObject private var heartRateMonitor = HeartRateMonitor.shared
+    @ObservedObject private var dataManager = DataManager.shared
 
     var body: some View {
         TabView {
             MonitoringView()
-                .tabItem {
-                    Label("Monitor", systemImage: AppIcons.heartRate)
-                }
 
             EventListView()
-                .tabItem {
-                    Label("Eventos", systemImage: AppIcons.list)
-                }
 
             SettingsView()
-                .tabItem {
-                    Label("Definições", systemImage: AppIcons.settings)
-                }
         }
-        .accentColor(AppTheme.Accent.lavender)
+        .tabViewStyle(.page)
     }
 }
 
