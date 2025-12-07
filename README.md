@@ -73,3 +73,7 @@ Specifications for Xcode (watchOS + iOS) implementation
     - Deliver unit/integration tests and a small demo dataset for verification.
 
 Acceptance checklist to hand off: target OS versions, HealthKit permissions implemented, continuous HR during sleep window, detection algorithm with configurable thresholds, haptic+sound alert, local persistence + sync, privacy strings, unit/integration tests, battery usage report.
+
+## Home Assistant skills
+
+The app now includes a Home Assistant skill registry for common actions like lights, locks, garage doors, and windows. Configure your Home Assistant URL, token, and default entity IDs in `HomeAssistantConfiguration`, then use `HomeAssistantSkillRegistry` and `HomeAssistantClient` to build service requests. See `HomeAssistantSkills.md` for detailed examples and extension steps.
