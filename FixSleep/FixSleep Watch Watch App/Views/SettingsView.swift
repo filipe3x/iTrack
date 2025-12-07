@@ -9,14 +9,43 @@ import SwiftUI
 
 struct SettingsView: View {
     @ObservedObject private var dataManager = DataManager.shared
+    @State private var showingCustomSensitivity = false
 
     var body: some View {
         List {
             Section(header: Text("Sensitivity")) {
-                Picker("Preset", selection: sensitivityPreset) {
-                    ForEach(AppConfiguration.SensitivityPreset.allCases, id: \.self) { preset in
-                        Text(preset.rawValue.capitalized)
-                            .tag(preset)
+                ForEach(AppConfiguration.SensitivityPreset.allCases, id: \.self) { preset in
+                    if preset == .custom {
+                        NavigationLink(destination: CustomSensitivityView()) {
+                            HStack {
+                                Text(preset.rawValue.capitalized)
+                                    .font(AppTheme.Typography.body())
+                                Spacer()
+                                if dataManager.settings.sensitivityPreset == preset {
+                                    Image(systemName: "checkmark")
+                                        .foregroundColor(AppTheme.Accent.mint)
+                                        .font(.system(size: 14, weight: .semibold))
+                                }
+                            }
+                        }
+                    } else {
+                        Button(action: {
+                            dataManager.updateSettings { settings in
+                                settings.sensitivityPreset = preset
+                            }
+                        }) {
+                            HStack {
+                                Text(preset.rawValue.capitalized)
+                                    .font(AppTheme.Typography.body())
+                                    .foregroundColor(AppTheme.Text.primary)
+                                Spacer()
+                                if dataManager.settings.sensitivityPreset == preset {
+                                    Image(systemName: "checkmark")
+                                        .foregroundColor(AppTheme.Accent.mint)
+                                        .font(.system(size: 14, weight: .semibold))
+                                }
+                            }
+                        }
                     }
                 }
             }
