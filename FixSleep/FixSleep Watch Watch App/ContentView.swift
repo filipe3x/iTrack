@@ -14,21 +14,12 @@ struct ContentView: View {
     var body: some View {
         TabView {
             MonitoringView()
-                .tabItem {
-                    Label("Monitor", systemImage: AppIcons.heartRate)
-                }
 
             EventListView()
-                .tabItem {
-                    Label("Eventos", systemImage: AppIcons.list)
-                }
 
             SettingsView()
-                .tabItem {
-                    Label("Definições", systemImage: AppIcons.settings)
-                }
         }
-        .accentColor(AppTheme.Accent.lavender)
+        .tabViewStyle(.page)
     }
 }
 
