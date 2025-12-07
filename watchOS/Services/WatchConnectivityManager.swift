@@ -1,20 +1,19 @@
 //
 //  WatchConnectivityManager.swift
-//  iTrack
+//  iTrack WatchKit Extension
 //
-//  Manages communication between iPhone and Apple Watch
+//  Manages communication between Apple Watch and iPhone
 //
 
 import Foundation
 import WatchConnectivity
 import Combine
 
-/// Manages WatchConnectivity session for syncing data between iPhone and Watch
+/// Manages WatchConnectivity session for syncing data between Watch and iPhone
 class WatchConnectivityManager: NSObject, ObservableObject {
     static let shared = WatchConnectivityManager()
 
-    @Published var isWatchAppInstalled = false
-    @Published var isReachable = false
+    @Published var isiPhoneReachable = false
 
     private let session: WCSession? = WCSession.isSupported() ? WCSession.default : nil
 
@@ -34,14 +33,11 @@ class WatchConnectivityManager: NSObject, ObservableObject {
         session.activate()
     }
 
-    // MARK: - Send Data to Watch
+    // MARK: - Send Data to iPhone
 
-    /// Send settings to watch
+    /// Send settings to iPhone
     func sendSettings(_ settings: UserSettings) {
-        guard let session = session, session.isReachable else {
-            print("Watch not reachable")
-            return
-        }
+        guard let session = session else { return }
 
         do {
             let encoder = JSONEncoder()
@@ -52,15 +48,19 @@ class WatchConnectivityManager: NSObject, ObservableObject {
                 "data": data
             ]
 
-            session.sendMessage(message, replyHandler: nil) { error in
-                print("Failed to send settings: \(error.localizedDescription)")
+            if session.isReachable {
+                session.sendMessage(message, replyHandler: nil) { error in
+                    print("Failed to send settings to iPhone: \(error.localizedDescription)")
+                }
+            } else {
+                session.transferUserInfo(message)
             }
         } catch {
             print("Failed to encode settings: \(error.localizedDescription)")
         }
     }
 
-    /// Send full event history to watch
+    /// Send the latest events to the paired iPhone
     func sendEventsData(_ data: Data) {
         guard let session = session else { return }
 
@@ -71,57 +71,35 @@ class WatchConnectivityManager: NSObject, ObservableObject {
 
         if session.isReachable {
             session.sendMessage(message, replyHandler: nil) { error in
-                print("Failed to send events: \(error.localizedDescription)")
+                print("Failed to send events to iPhone: \(error.localizedDescription)")
             }
         } else {
             session.transferUserInfo(message)
         }
     }
 
-    /// Transfer user info (for background sync)
-    func transferUserInfo(_ info: [String: Any]) {
-        guard let session = session else { return }
-        session.transferUserInfo(info)
-    }
+    // MARK: - Requests
 
-    // MARK: - Request Data from Watch
-
-    /// Request current monitoring status from watch
-    func requestMonitoringStatus(completion: @escaping (Bool) -> Void) {
+    /// Request the latest settings from iPhone
+    func requestSettings(completion: @escaping (UserSettings?) -> Void) {
         guard let session = session, session.isReachable else {
-            completion(false)
+            completion(nil)
             return
         }
 
-        let message = ["type": "statusRequest"]
+        let message = ["type": "settingsRequest"]
 
         session.sendMessage(message, replyHandler: { reply in
-            if let isMonitoring = reply["isMonitoring"] as? Bool {
-                completion(isMonitoring)
+            if let data = reply["data"] as? Data {
+                let decoder = JSONDecoder()
+                let settings = try? decoder.decode(UserSettings.self, from: data)
+                completion(settings)
             } else {
-                completion(false)
+                completion(nil)
             }
         }) { error in
-            print("Failed to request status: \(error.localizedDescription)")
-            completion(false)
-        }
-    }
-
-    /// Request recent events from watch
-    func requestRecentEvents() {
-        guard let session = session, session.isReachable else {
-            print("Watch not reachable")
-            return
-        }
-
-        let message = ["type": "eventsRequest"]
-
-        session.sendMessage(message, replyHandler: { reply in
-            if let eventsData = reply["events"] as? Data {
-                self.processReceivedEvents(eventsData)
-            }
-        }) { error in
-            print("Failed to request events: \(error.localizedDescription)")
+            print("Failed to request settings: \(error.localizedDescription)")
+            completion(nil)
         }
     }
 
@@ -132,7 +110,6 @@ class WatchConnectivityManager: NSObject, ObservableObject {
             let decoder = JSONDecoder()
             let events = try decoder.decode([DetectionEvent].self, from: data)
 
-            // Merge with existing events
             for event in events {
                 let existingEvents = DataManager.shared.loadAllEvents()
                 if !existingEvents.contains(where: { $0.id == event.id }) {
@@ -160,8 +137,7 @@ class WatchConnectivityManager: NSObject, ObservableObject {
 extension WatchConnectivityManager: WCSessionDelegate {
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
         DispatchQueue.main.async {
-            self.isWatchAppInstalled = session.isWatchAppInstalled
-            self.isReachable = session.isReachable
+            self.isiPhoneReachable = session.isReachable
         }
 
         if let error = error {
@@ -171,20 +147,10 @@ extension WatchConnectivityManager: WCSessionDelegate {
         }
     }
 
-    func sessionDidBecomeInactive(_ session: WCSession) {
-        print("WCSession became inactive")
-    }
-
-    func sessionDidDeactivate(_ session: WCSession) {
-        print("WCSession deactivated")
-        // Reactivate session for iOS
-        session.activate()
-    }
-
     func sessionReachabilityDidChange(_ session: WCSession) {
         DispatchQueue.main.async {
-            self.isReachable = session.isReachable
-            print("Watch reachability changed: \(session.isReachable)")
+            self.isiPhoneReachable = session.isReachable
+            print("iPhone reachability changed: \(session.isReachable)")
         }
     }
 
@@ -194,7 +160,11 @@ extension WatchConnectivityManager: WCSessionDelegate {
         handleReceivedMessage(message)
     }
 
-    func session(_ session: WCSession, didReceiveMessage message: [String : Any], replyHandler: @escaping ([String : Any]) -> Void) {
+    func session(
+        _ session: WCSession,
+        didReceiveMessage message: [String : Any],
+        replyHandler: @escaping ([String : Any]) -> Void
+    ) {
         if let type = message["type"] as? String {
             switch type {
             case "eventsRequest":
@@ -205,14 +175,7 @@ extension WatchConnectivityManager: WCSessionDelegate {
                 }
                 return
             case "statusRequest":
-                replyHandler(["isMonitoring": false])
-                return
-            case "settingsRequest":
-                if let data = try? JSONEncoder().encode(DataManager.shared.settings) {
-                    replyHandler(["data": data])
-                } else {
-                    replyHandler([:])
-                }
+                replyHandler(["isMonitoring": HeartRateMonitor.shared.isMonitoring])
                 return
             default:
                 break
@@ -220,8 +183,6 @@ extension WatchConnectivityManager: WCSessionDelegate {
         }
 
         handleReceivedMessage(message)
-
-        // Send acknowledgement
         replyHandler(["status": "received"])
     }
 
@@ -234,25 +195,16 @@ extension WatchConnectivityManager: WCSessionDelegate {
 
         switch type {
         case "event":
-            // Received new event from watch
             if let eventData = message["data"] as? Data {
                 processReceivedEvents(eventData)
             }
 
         case "settings":
-            // Received updated settings from watch
             if let settingsData = message["data"] as? Data {
                 processReceivedSettings(settingsData)
             }
 
-        case "statusUpdate":
-            // Received monitoring status update
-            if let isMonitoring = message["isMonitoring"] as? Bool {
-                print("Watch monitoring status: \(isMonitoring)")
-            }
-
         case "events":
-            // Received a full events sync
             if let eventsData = message["data"] as? Data {
                 processReceivedEvents(eventsData)
             }

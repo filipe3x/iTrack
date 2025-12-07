@@ -40,7 +40,7 @@ class DataManager: ObservableObject {
     // MARK: - Settings Management
 
     /// Save user settings
-    func saveSettings(_ settings: UserSettings) {
+    func saveSettings(_ settings: UserSettings, shouldSync: Bool = true) {
         self.settings = settings
 
         if let encoded = try? encoder.encode(settings) {
@@ -48,7 +48,9 @@ class DataManager: ObservableObject {
         }
 
         // Sync to watch/phone via WatchConnectivity
-        syncSettings()
+        if shouldSync {
+            syncSettings()
+        }
     }
 
     /// Update a specific setting
@@ -61,7 +63,7 @@ class DataManager: ObservableObject {
     // MARK: - Event Management
 
     /// Save a detection event
-    func saveEvent(_ event: DetectionEvent) {
+    func saveEvent(_ event: DetectionEvent, shouldSync: Bool = true) {
         var events = loadAllEvents()
         events.append(event)
 
@@ -84,11 +86,14 @@ class DataManager: ObservableObject {
         }
 
         loadEvents()
-        syncEvents()
+
+        if shouldSync {
+            syncEvents()
+        }
     }
 
     /// Update an existing event
-    func updateEvent(_ event: DetectionEvent) {
+    func updateEvent(_ event: DetectionEvent, shouldSync: Bool = true) {
         var events = loadAllEvents()
 
         if let index = events.firstIndex(where: { $0.id == event.id }) {
@@ -99,7 +104,10 @@ class DataManager: ObservableObject {
             }
 
             loadEvents()
-            syncEvents()
+
+            if shouldSync {
+                syncEvents()
+            }
         }
     }
 
@@ -235,10 +243,15 @@ class DataManager: ObservableObject {
     // MARK: - Sync (placeholder for WatchConnectivity)
 
     private func syncSettings() {
-        // Will be implemented in WatchConnectivityManager
+        #if canImport(WatchConnectivity)
+        WatchConnectivityManager.shared.sendSettings(settings)
+        #endif
     }
 
     private func syncEvents() {
-        // Will be implemented in WatchConnectivityManager
+        #if canImport(WatchConnectivity)
+        guard let encodedEvents = try? encoder.encode(loadAllEvents()) else { return }
+        WatchConnectivityManager.shared.sendEventsData(encodedEvents)
+        #endif
     }
 }
