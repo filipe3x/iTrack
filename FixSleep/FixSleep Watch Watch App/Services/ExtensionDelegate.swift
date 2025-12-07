@@ -69,10 +69,12 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
         withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
     ) {
         // Show notification even when app is in foreground
-        if #available(watchOS 8.0, *) {
+        if #available(watchOS 10.0, *) {
+            completionHandler([.banner, .list, .sound])
+        } else if #available(watchOS 8.0, *) {
             completionHandler([.banner, .sound])
         } else {
-            completionHandler([.alert, .sound])
+            completionHandler([.sound])
         }
     }
 
