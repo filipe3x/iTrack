@@ -31,7 +31,15 @@ class WatchConnectivityManager: NSObject, ObservableObject {
         }
 
         session.delegate = self
+        updateState(from: session)
         session.activate()
+    }
+
+    private func updateState(from session: WCSession) {
+        DispatchQueue.main.async {
+            self.isWatchAppInstalled = session.isWatchAppInstalled
+            self.isReachable = session.isReachable
+        }
     }
 
     // MARK: - Send Data to Watch
@@ -159,10 +167,7 @@ class WatchConnectivityManager: NSObject, ObservableObject {
 
 extension WatchConnectivityManager: WCSessionDelegate {
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
-        DispatchQueue.main.async {
-            self.isWatchAppInstalled = session.isWatchAppInstalled
-            self.isReachable = session.isReachable
-        }
+        updateState(from: session)
 
         if let error = error {
             print("WCSession activation failed: \(error.localizedDescription)")
@@ -182,10 +187,12 @@ extension WatchConnectivityManager: WCSessionDelegate {
     }
 
     func sessionReachabilityDidChange(_ session: WCSession) {
-        DispatchQueue.main.async {
-            self.isReachable = session.isReachable
-            print("Watch reachability changed: \(session.isReachable)")
-        }
+        updateState(from: session)
+        print("Watch reachability changed: \(session.isReachable)")
+    }
+
+    func sessionWatchStateDidChange(_ session: WCSession) {
+        updateState(from: session)
     }
 
     // MARK: - Receive Messages
