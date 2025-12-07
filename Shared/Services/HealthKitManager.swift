@@ -38,9 +38,9 @@ class HealthKitManager: ObservableObject {
             HKQuantityType.quantityType(forIdentifier: .heartRate)!
         ]
 
-        if let workoutType = HKObjectType.workoutType() as? HKSampleType {
-            types.insert(workoutType)
-        }
+        // HKWorkoutType is already an HKSampleType, no cast needed
+        let workoutType = HKObjectType.workoutType()
+        types.insert(workoutType)
 
         return types
     }()
