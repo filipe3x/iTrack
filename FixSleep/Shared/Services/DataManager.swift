@@ -231,10 +231,15 @@ class DataManager: ObservableObject {
     // MARK: - Sync (placeholder for WatchConnectivity)
 
     private func syncSettings() {
-        // Will be implemented in WatchConnectivityManager
+        #if canImport(WatchConnectivity)
+        WatchConnectivityManager.shared.sendSettings(settings)
+        #endif
     }
 
     private func syncEvents() {
-        // Will be implemented in WatchConnectivityManager
+        #if canImport(WatchConnectivity)
+        guard let encodedEvents = try? encoder.encode(loadAllEvents()) else { return }
+        WatchConnectivityManager.shared.sendEventsData(encodedEvents)
+        #endif
     }
 }

@@ -60,6 +60,24 @@ class WatchConnectivityManager: NSObject, ObservableObject {
         }
     }
 
+    /// Send full event history to watch
+    func sendEventsData(_ data: Data) {
+        guard let session = session else { return }
+
+        let message: [String: Any] = [
+            "type": "events",
+            "data": data
+        ]
+
+        if session.isReachable {
+            session.sendMessage(message, replyHandler: nil) { error in
+                print("Failed to send events: \(error.localizedDescription)")
+            }
+        } else {
+            session.transferUserInfo(message)
+        }
+    }
+
     /// Transfer user info (for background sync)
     func transferUserInfo(_ info: [String: Any]) {
         guard let session = session else { return }
