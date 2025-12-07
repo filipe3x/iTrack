@@ -216,11 +216,11 @@ class DataManager: ObservableObject {
             let timestamp = dateFormatter.string(from: event.timestamp)
             let type = event.detectionType.rawValue
             let heartRate = String(event.heartRateAtDetection)
-            let baseline = event.baselineHeartRate.map(String.init) ?? ""
-            let hrv = event.hrvAtDetection.map(String.init) ?? ""
+            let baseline = event.baselineHeartRate.map { String($0) } ?? ""
+            let hrv = event.hrvAtDetection.map { String($0) } ?? ""
             let confidence = String(event.confidence)
             let response = event.alertResponse.rawValue
-            let delta = event.deltaFromBaseline.map(String.init) ?? ""
+            let delta = event.deltaFromBaseline.map { String($0) } ?? ""
             let movement = String(event.wasMovementSuppressed)
 
             let fields: [String] = [id, timestamp, type, heartRate, baseline, hrv, confidence, response, delta, movement]
