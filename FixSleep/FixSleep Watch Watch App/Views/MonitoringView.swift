@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct MonitoringView: View {
-    @StateObject private var heartRateMonitor = HeartRateMonitor.shared
-    @StateObject private var dataManager = DataManager.shared
+    @ObservedObject private var heartRateMonitor = HeartRateMonitor.shared
+    @ObservedObject private var dataManager = DataManager.shared
     @State private var showError = false
     @State private var errorMessage = ""
 
