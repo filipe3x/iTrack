@@ -933,7 +933,7 @@
 				INFOPLIST_FILE = "FixSleep-Watch-Watch-App-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "FixSleep Watch";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = brasume.com.FixSleep;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -965,7 +965,7 @@
 				INFOPLIST_FILE = "FixSleep-Watch-Watch-App-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "FixSleep Watch";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = brasume.com.FixSleep;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
