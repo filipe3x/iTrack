@@ -175,7 +175,7 @@ struct SettingsView: View {
             Text("About")
         } footer: {
             VStack(alignment: .leading, spacing: 8) {
-                Text("iTrack is not a medical device")
+                Text("FixSleep is not a medical device")
                     .font(.caption)
                     .foregroundColor(.orange)
 

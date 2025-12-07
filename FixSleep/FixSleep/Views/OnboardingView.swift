@@ -85,7 +85,7 @@ struct WelcomePage: View {
                 .font(.system(size: 80))
                 .foregroundColor(.red)
 
-            Text("Welcome to iTrack")
+            Text("Welcome to FixSleep")
                 .font(.largeTitle)
                 .fontWeight(.bold)
 
@@ -147,7 +147,7 @@ struct DisclaimerPage: View {
                 .fontWeight(.bold)
 
             VStack(alignment: .leading, spacing: 12) {
-                DisclaimerPoint(text: "iTrack is not a medical device")
+                DisclaimerPoint(text: "FixSleep is not a medical device")
                 DisclaimerPoint(text: "Not intended for diagnosis or treatment")
                 DisclaimerPoint(text: "Consult healthcare professionals for medical advice")
                 DisclaimerPoint(text: "Detection accuracy may vary by individual")
@@ -172,7 +172,7 @@ struct PermissionsPage: View {
                 .font(.largeTitle)
                 .fontWeight(.bold)
 
-            Text("iTrack needs the following permissions to function:")
+            Text("FixSleep needs the following permissions to function:")
                 .font(.body)
                 .foregroundColor(.secondary)
                 .multilineTextAlignment(.center)

@@ -11,7 +11,7 @@ import UserNotifications
 class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenterDelegate {
 
     func applicationDidFinishLaunching() {
-        print("iTrack Watch Extension launched")
+        print("FixSleep Watch Extension launched")
 
         // Setup notification categories
         HapticManager.shared.setupNotificationCategories()
@@ -21,11 +21,11 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
     }
 
     func applicationDidBecomeActive() {
-        print("iTrack Watch Extension became active")
+        print("FixSleep Watch Extension became active")
     }
 
     func applicationWillResignActive() {
-        print("iTrack Watch Extension will resign active")
+        print("FixSleep Watch Extension will resign active")
     }
 
     func handle(_ backgroundTasks: Set<WKRefreshBackgroundTask>) {
