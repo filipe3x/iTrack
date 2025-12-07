@@ -13,25 +13,27 @@ struct EventListView: View {
     var body: some View {
         List {
             if dataManager.recentEvents.isEmpty {
-                VStack(spacing: 8) {
-                    Image(systemName: "moon.stars")
-                        .font(.largeTitle)
-                        .foregroundColor(.gray)
+                VStack(spacing: 12) {
+                    Image(systemName: "moon.stars.fill")
+                        .font(.system(size: 32))
+                        .foregroundStyle(AppTheme.Gradients.moon)
 
-                    Text("No Events")
-                        .font(.caption)
-                        .foregroundColor(.gray)
+                    Text("Sem Eventos")
+                        .font(AppTheme.Typography.caption(weight: .medium))
+                        .foregroundColor(AppTheme.Text.primary)
 
-                    Text("Events will appear here when detected")
-                        .font(.caption2)
-                        .foregroundColor(.gray)
+                    Text("Eventos detetados aparecerão aqui")
+                        .font(AppTheme.Typography.tiny())
+                        .foregroundColor(AppTheme.Text.muted)
                         .multilineTextAlignment(.center)
                 }
                 .frame(maxWidth: .infinity)
+                .padding(.vertical, 16)
                 .listRowBackground(Color.clear)
             } else {
                 ForEach(dataManager.recentEvents.reversed()) { event in
                     EventRow(event: event)
+                        .listRowBackground(Color.white.opacity(0.02))
                 }
             }
         }
@@ -43,47 +45,54 @@ struct EventRow: View {
     let event: DetectionEvent
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: 6) {
             HStack {
                 Image(systemName: "heart.fill")
                     .foregroundColor(eventColor)
-                    .font(.caption)
+                    .font(.system(size: 12))
 
                 Text("\(Int(event.heartRateAtDetection)) bpm")
-                    .font(.headline)
-                    .fontWeight(.semibold)
+                    .font(AppTheme.Typography.caption(weight: .semibold))
+                    .foregroundColor(AppTheme.Text.primary)
 
                 Spacer()
 
                 Text(timeString)
-                    .font(.caption2)
-                    .foregroundColor(.gray)
+                    .font(AppTheme.Typography.tiny())
+                    .foregroundColor(AppTheme.Text.muted)
             }
 
             Text(event.detectionType.rawValue)
-                .font(.caption2)
-                .foregroundColor(.gray)
+                .font(AppTheme.Typography.tiny())
+                .foregroundColor(AppTheme.Text.secondary)
 
             if let delta = event.deltaFromBaseline {
-                Text("+\(Int(delta)) from baseline")
-                    .font(.caption2)
-                    .foregroundColor(.orange)
+                HStack(spacing: 4) {
+                    Image(systemName: "arrow.up.right")
+                        .font(.system(size: 10))
+                        .foregroundColor(AppTheme.Accent.chamomile)
+
+                    Text("+\(Int(delta)) da baseline")
+                        .font(AppTheme.Typography.tiny())
+                        .foregroundColor(AppTheme.Accent.chamomile)
+                }
             }
 
             // Response status
             responseIndicator
         }
-        .padding(.vertical, 4)
+        .padding(.vertical, 6)
+        .padding(.horizontal, 4)
     }
 
     private var eventColor: Color {
         switch event.confidence {
         case 0.8...1.0:
-            return .red
+            return AppTheme.Accent.rose
         case 0.5..<0.8:
-            return .orange
+            return AppTheme.Accent.chamomile
         default:
-            return .yellow
+            return AppTheme.Accent.lavender
         }
     }
 
@@ -96,12 +105,29 @@ struct EventRow: View {
     private var responseIndicator: some View {
         HStack(spacing: 4) {
             Image(systemName: responseIcon)
-                .font(.caption2)
+                .font(.system(size: 10))
 
-            Text(event.alertResponse.rawValue.capitalized)
-                .font(.caption2)
+            Text(responseText)
+                .font(AppTheme.Typography.tiny(weight: .medium))
         }
         .foregroundColor(responseColor)
+        .padding(.horizontal, 8)
+        .padding(.vertical, 3)
+        .background(responseColor.opacity(0.12))
+        .cornerRadius(4)
+    }
+
+    private var responseText: String {
+        switch event.alertResponse {
+        case .acknowledged:
+            return "Acknowledged"
+        case .snoozed:
+            return "Snoozed"
+        case .dismissed:
+            return "Dismissed"
+        case .notResponded:
+            return "Not Responded"
+        }
     }
 
     private var responseIcon: String {
@@ -120,13 +146,13 @@ struct EventRow: View {
     private var responseColor: Color {
         switch event.alertResponse {
         case .acknowledged:
-            return .green
+            return AppTheme.Accent.mint
         case .snoozed:
-            return .blue
+            return AppTheme.Accent.lavender
         case .dismissed:
-            return .gray
+            return AppTheme.Text.muted
         case .notResponded:
-            return .yellow
+            return AppTheme.Accent.chamomile
         }
     }
 }
