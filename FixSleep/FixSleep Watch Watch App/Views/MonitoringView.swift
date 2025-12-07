@@ -79,14 +79,28 @@ struct MonitoringView: View {
                     Button(action: toggleMonitoring) {
                         HStack(spacing: 6) {
                             Image(systemName: heartRateMonitor.isMonitoring ? AppIcons.stop : AppIcons.play)
-                                .font(.system(size: 12))
+                                .font(.system(size: 14, weight: .semibold))
                             Text(heartRateMonitor.isMonitoring ? "Parar" : "Iniciar")
                                 .font(AppTheme.Typography.caption(weight: .semibold))
                         }
+                        .foregroundColor(AppTheme.Background.deep)
                         .frame(maxWidth: .infinity)
-                        .padding(.vertical, 8)
+                        .padding(.vertical, 12)
+                        .padding(.horizontal, 16)
+                        .background(
+                            heartRateMonitor.isMonitoring
+                                ? AppTheme.Accent.rose
+                                : AppTheme.Accent.mint
+                        )
+                        .cornerRadius(AppTheme.CornerRadius.full)
+                        .shadow(
+                            color: (heartRateMonitor.isMonitoring ? AppTheme.Accent.rose : AppTheme.Accent.mint).opacity(0.4),
+                            radius: 8,
+                            x: 0,
+                            y: 4
+                        )
                     }
-                    .accentColor(heartRateMonitor.isMonitoring ? AppTheme.Accent.rose : AppTheme.Accent.mint)
+                    .buttonStyle(.plain)
 
                     // Session info
                     if heartRateMonitor.isMonitoring {
