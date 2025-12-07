@@ -14,6 +14,8 @@ class WatchConnectivityManager: NSObject, ObservableObject {
     static let shared = WatchConnectivityManager()
 
     @Published var isiPhoneReachable = false
+    @Published var lastSentHeartRate: Double?
+    @Published var lastSentTimestamp: Date?
 
     private let session: WCSession? = WCSession.isSupported() ? WCSession.default : nil
 
@@ -78,6 +80,26 @@ class WatchConnectivityManager: NSObject, ObservableObject {
         }
     }
 
+    /// Send the most recent heart rate sample to the paired iPhone
+    func sendHeartRate(_ bpm: Double, at timestamp: Date) {
+        guard let session = session, session.isReachable else { return }
+
+        let message: [String: Any] = [
+            "type": "heartRate",
+            "bpm": bpm,
+            "timestamp": timestamp.timeIntervalSince1970
+        ]
+
+        session.sendMessage(message, replyHandler: nil) { error in
+            print("Failed to send heart rate to iPhone: \(error.localizedDescription)")
+        }
+
+        DispatchQueue.main.async {
+            self.lastSentHeartRate = bpm
+            self.lastSentTimestamp = timestamp
+        }
+    }
+
     // MARK: - Requests
 
     /// Request the latest settings from iPhone
@@ -101,6 +123,19 @@ class WatchConnectivityManager: NSObject, ObservableObject {
             print("Failed to request settings: \(error.localizedDescription)")
             completion(nil)
         }
+    }
+
+    /// Generate the most recent heart rate payload if available
+    private func latestHeartRatePayload() -> [String: Any]? {
+        let bpm = HeartRateMonitor.shared.currentHeartRate
+        let timestamp = HeartRateMonitor.shared.lastSampleTime
+
+        guard bpm > 0, let timestamp else { return nil }
+
+        return [
+            "bpm": bpm,
+            "timestamp": timestamp.timeIntervalSince1970
+        ]
     }
 
     // MARK: - Process Received Data
@@ -144,6 +179,12 @@ extension WatchConnectivityManager: WCSessionDelegate {
             print("WCSession activation failed: \(error.localizedDescription)")
         } else {
             print("WCSession activated with state: \(activationState.rawValue)")
+
+            if session.isReachable {
+                if let payload = latestHeartRatePayload() {
+                    session.sendMessage(["type": "heartRate"].merging(payload) { $1 }, replyHandler: nil)
+                }
+            }
         }
     }
 
@@ -151,6 +192,10 @@ extension WatchConnectivityManager: WCSessionDelegate {
         DispatchQueue.main.async {
             self.isiPhoneReachable = session.isReachable
             print("iPhone reachability changed: \(session.isReachable)")
+
+            if session.isReachable, let payload = self.latestHeartRatePayload() {
+                session.sendMessage(["type": "heartRate"].merging(payload) { $1 }, replyHandler: nil)
+            }
         }
     }
 
@@ -176,6 +221,13 @@ extension WatchConnectivityManager: WCSessionDelegate {
                 return
             case "statusRequest":
                 replyHandler(["isMonitoring": HeartRateMonitor.shared.isMonitoring])
+                return
+            case "heartRateRequest":
+                if let payload = latestHeartRatePayload() {
+                    replyHandler(payload)
+                } else {
+                    replyHandler([:])
+                }
                 return
             default:
                 break

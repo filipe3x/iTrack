@@ -45,21 +45,79 @@ struct DashboardView: View {
             }
             .navigationBarHidden(true)
             .background(AppTheme.Background.deep)
+            .onAppear {
+                watchConnectivity.requestCurrentHeartRate()
+            }
         }
     }
 
     private var watchStatusCard: some View {
-        ThemeInfoCard(
-            icon: AppIcons.watch,
-            title: "Apple Watch",
-            subtitle: watchConnectivity.isWatchAppInstalled ? "Conectado" : "Desconectado",
-            description: watchConnectivity.isWatchAppInstalled
-                ? "O seu Apple Watch está sincronizado e pronto"
-                : "Instale FixSleep no Apple Watch para começar",
-            accentColor: watchConnectivity.isWatchAppInstalled
-                ? AppTheme.Accent.mint
-                : AppTheme.Accent.rose
-        )
+        VStack(alignment: .leading, spacing: AppTheme.Spacing.md) {
+            HStack(alignment: .center, spacing: AppTheme.Spacing.md) {
+                ThemedIcon(AppIcons.watch, size: 22, color: watchStatusAccent)
+
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Apple Watch")
+                        .font(AppTheme.Typography.body(weight: .medium))
+                        .foregroundColor(AppTheme.Text.primary)
+
+                    HStack(spacing: AppTheme.Spacing.xs) {
+                        ThemeStatusBadge(watchStatusLabel, color: watchStatusAccent, icon: watchStatusIcon)
+
+                        if watchConnectivity.isReachable {
+                            ThemeStatusBadge("Live", color: AppTheme.Accent.mint, icon: "waveform.path.ecg")
+                        }
+                    }
+                }
+
+                Spacer()
+
+                if let bpm = liveHeartRateValue, watchConnectivity.isReachable {
+                    Text(bpm)
+                        .font(AppTheme.Typography.caption(weight: .medium))
+                        .foregroundColor(AppTheme.Text.secondary)
+                        .padding(.horizontal, AppTheme.Spacing.sm)
+                        .padding(.vertical, 6)
+                        .background(AppTheme.Accent.mint.opacity(0.12))
+                        .cornerRadius(AppTheme.CornerRadius.sm)
+                }
+            }
+
+            Text(watchStatusDescription)
+                .font(AppTheme.Typography.caption(weight: .light))
+                .foregroundColor(AppTheme.Text.secondary)
+                .lineSpacing(3)
+
+            if let bpm = liveHeartRateValue, watchConnectivity.isReachable {
+                Divider()
+                    .background(AppTheme.Border.subtle)
+
+                HStack(alignment: .center, spacing: AppTheme.Spacing.lg) {
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text("Batimentos em tempo real")
+                            .font(AppTheme.Typography.caption())
+                            .foregroundColor(AppTheme.Text.muted)
+
+                        HStack(alignment: .lastTextBaseline, spacing: AppTheme.Spacing.sm) {
+                            Text(bpm)
+                                .font(AppTheme.Typography.largeTitle(weight: .semibold))
+                                .foregroundColor(AppTheme.Text.primary)
+
+                            if let timestamp = liveHeartRateTimestampLabel {
+                                Text(timestamp)
+                                    .font(AppTheme.Typography.tiny())
+                                    .foregroundColor(AppTheme.Text.secondary)
+                            }
+                        }
+                    }
+
+                    Spacer()
+
+                    BreathingCircle(color: AppTheme.Accent.mint, size: 14)
+                }
+            }
+        }
+        .themeElevatedCard(padding: AppTheme.Spacing.lg)
     }
 
     private var sleepWindowCard: some View {
@@ -242,6 +300,49 @@ struct DashboardView: View {
     private var weekEventCount: Int {
         let weekAgo = Calendar.current.date(byAdding: .day, value: -7, to: Date()) ?? Date()
         return dataManager.recentEvents.filter { $0.timestamp > weekAgo }.count
+    }
+
+    private var isWatchConnected: Bool {
+        watchConnectivity.isWatchAppInstalled && watchConnectivity.isReachable
+    }
+
+    private var watchStatusLabel: String {
+        if isWatchConnected { return "Conectado" }
+        if watchConnectivity.isWatchAppInstalled { return "Aguardando" }
+        return "Desconectado"
+    }
+
+    private var watchStatusDescription: String {
+        if isWatchConnected {
+            return "O seu Apple Watch está sincronizado e a enviar dados em tempo real."
+        }
+
+        if watchConnectivity.isWatchAppInstalled {
+            return "Abra FixSleep no Apple Watch para estabelecer ligação e receber leituras ao vivo."
+        }
+
+        return "Instale FixSleep no Apple Watch para começar a monitorizar e sincronizar eventos."
+    }
+
+    private var watchStatusAccent: Color {
+        isWatchConnected ? AppTheme.Accent.mint : AppTheme.Accent.rose
+    }
+
+    private var watchStatusIcon: String? {
+        isWatchConnected ? "checkmark" : "wifi.slash"
+    }
+
+    private var liveHeartRateValue: String? {
+        guard let bpm = watchConnectivity.latestHeartRate, bpm > 0 else { return nil }
+        return "\(Int(bpm)) bpm"
+    }
+
+    private var liveHeartRateTimestampLabel: String? {
+        guard let date = watchConnectivity.latestHeartRateTimestamp else { return nil }
+
+        let formatter = RelativeDateTimeFormatter()
+        formatter.unitsStyle = .abbreviated
+        return formatter.localizedString(for: date, relativeTo: Date())
     }
 
     // MARK: - Helper Functions

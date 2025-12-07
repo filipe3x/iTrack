@@ -152,6 +152,9 @@ class HeartRateMonitor: NSObject, ObservableObject {
             self.lastSampleTime = sample.timestamp
         }
 
+        // Stream live heart rate back to the paired iPhone when reachable
+        WatchConnectivityManager.shared.sendHeartRate(sample.heartRate, at: sample.timestamp)
+
         // Send to detection engine
         DetectionEngine.shared.analyzeSample(sample, historicalData: heartRateBuffer)
     }
