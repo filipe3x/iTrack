@@ -2,9 +2,13 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>remote-notification</string>
-	</array>
+        <key>UIBackgroundModes</key>
+        <array>
+                <string>remote-notification</string>
+        </array>
+        <key>NSHealthShareUsageDescription</key>
+        <string>Sleep tracker needs access to read your Health data to provide accurate insights.</string>
+        <key>NSHealthUpdateUsageDescription</key>
+        <string>Sleep tracker writes sleep data to Health to keep your records up to date.</string>
 </dict>
 </plist>
