@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3FD49AE71F6573F35F2ADF0C /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77738FEA3FCE12F17CE4AE08 /* DashboardView.swift */; };
+		3B5ECFB3F3A4C14EF91FA90E /* EventLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7130F41E1CF47B58A52462A4 /* EventLogView.swift */; };
+		04EDA3FB21223534A87D2BBA /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3903C24ADE915E062C0A709 /* OnboardingView.swift */; };
+		E91300F0B9351F6696DB0DEC /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05EE1759FA8A5D914AE6B43D /* SettingsView.swift */; };
+		C75FD39211FB65E073E06050 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E6CA305937C42E1A7876E1 /* NotificationManager.swift */; };
+		AE506489D87F8F7567DB9BCB /* WatchConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC8832B09B74C12741E9DC4B /* WatchConnectivityManager.swift */; };
 		773019B62EE4BD140033EB26 /* FixSleepApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773019B52EE4BD140033EB26 /* FixSleepApp.swift */; };
 		773019B82EE4BD140033EB26 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773019B72EE4BD140033EB26 /* ContentView.swift */; };
 		773019BA2EE4BD160033EB26 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 773019B92EE4BD160033EB26 /* Assets.xcassets */; };
@@ -123,6 +129,12 @@
 		774B4AB52EE4CC50009FB253 /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
 		774B4AB62EE4CC50009FB253 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		774B4AB72EE4CC50009FB253 /* DetectionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetectionEngine.swift; sourceTree = "<group>"; };
+		77738FEA3FCE12F17CE4AE08 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		7130F41E1CF47B58A52462A4 /* EventLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventLogView.swift; sourceTree = "<group>"; };
+		F3903C24ADE915E062C0A709 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		05EE1759FA8A5D914AE6B43D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		52E6CA305937C42E1A7876E1 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		FC8832B09B74C12741E9DC4B /* WatchConnectivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchConnectivityManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -205,6 +217,8 @@
 				774B4AA82EE4CE49009FB253 /* FixSleep.entitlements */,
 				773019B52EE4BD140033EB26 /* FixSleepApp.swift */,
 				773019B72EE4BD140033EB26 /* ContentView.swift */,
+				52416F4493D744B1EC2AAF30 /* Views */,
+				39510AD0A88ADE2AA39335CE /* Services */,
 				773019B92EE4BD160033EB26 /* Assets.xcassets */,
 				773019BB2EE4BD160033EB26 /* Preview Content */,
 			);
@@ -217,6 +231,26 @@
 				773019BC2EE4BD160033EB26 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		52416F4493D744B1EC2AAF30 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				77738FEA3FCE12F17CE4AE08 /* DashboardView.swift */,
+				7130F41E1CF47B58A52462A4 /* EventLogView.swift */,
+				F3903C24ADE915E062C0A709 /* OnboardingView.swift */,
+				05EE1759FA8A5D914AE6B43D /* SettingsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		39510AD0A88ADE2AA39335CE /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				52E6CA305937C42E1A7876E1 /* NotificationManager.swift */,
+				FC8832B09B74C12741E9DC4B /* WatchConnectivityManager.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 		773019C52EE4BD160033EB26 /* FixSleepTests */ = {
@@ -575,6 +609,12 @@
 				774B4A942EE4CC50009FB253 /* AppConfiguration.swift in Sources */,
 				773019B82EE4BD140033EB26 /* ContentView.swift in Sources */,
 				773019B62EE4BD140033EB26 /* FixSleepApp.swift in Sources */,
+				3FD49AE71F6573F35F2ADF0C /* DashboardView.swift in Sources */,
+				3B5ECFB3F3A4C14EF91FA90E /* EventLogView.swift in Sources */,
+				04EDA3FB21223534A87D2BBA /* OnboardingView.swift in Sources */,
+				E91300F0B9351F6696DB0DEC /* SettingsView.swift in Sources */,
+				C75FD39211FB65E073E06050 /* NotificationManager.swift in Sources */,
+				AE506489D87F8F7567DB9BCB /* WatchConnectivityManager.swift in Sources */,
 				774B4A9E2EE4CC50009FB253 /* AppIcons.swift in Sources */,
 				774B4AA42EE4CC50009FB253 /* DataManager.swift in Sources */,
 				774B4A9C2EE4CC50009FB253 /* BackgroundEffects.swift in Sources */,

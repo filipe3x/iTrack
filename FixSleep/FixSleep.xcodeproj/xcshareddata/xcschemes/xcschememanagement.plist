@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>SchemeUserState</key>
+	<dict>
+		<key>FixSleep.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>0</integer>
+		</dict>
+		<key>FixSleep Watch Watch App.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>773019B12EE4BD140033EB26</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>773019C12EE4BD160033EB26</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>773019CB2EE4BD160033EB26</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>773019E22EE4BEA80033EB26</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>773019F12EE4BEAB0033EB26</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>773019FB2EE4BEAC0033EB26</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+	</dict>
+</dict>
+</plist>
