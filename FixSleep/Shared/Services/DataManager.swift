@@ -8,6 +8,10 @@
 import Foundation
 import Combine
 
+#if canImport(WatchConnectivity)
+import WatchConnectivity
+#endif
+
 /// Manages persistent storage of events, sessions, and settings
 class DataManager: ObservableObject {
     static let shared = DataManager()
@@ -231,10 +235,55 @@ class DataManager: ObservableObject {
     // MARK: - Sync (placeholder for WatchConnectivity)
 
     private func syncSettings() {
-        // Will be implemented in WatchConnectivityManager
+        #if canImport(WatchConnectivity)
+        guard let encodedSettings = try? encoder.encode(settings) else { return }
+        WatchSyncBridge.send(type: "settings", payload: encodedSettings)
+        #endif
     }
 
     private func syncEvents() {
-        // Will be implemented in WatchConnectivityManager
+        #if canImport(WatchConnectivity)
+        guard let encodedEvents = try? encoder.encode(loadAllEvents()) else { return }
+        WatchSyncBridge.send(type: "events", payload: encodedEvents)
+        #endif
     }
 }
+
+#if canImport(WatchConnectivity)
+private enum WatchSyncBridge {
+    private static let delegate = WatchSyncDelegate()
+
+    static func send(type: String, payload: Data) {
+        guard WCSession.isSupported() else { return }
+
+        let session = WCSession.default
+        if session.delegate == nil {
+            session.delegate = delegate
+            session.activate()
+        }
+
+        let message: [String: Any] = [
+            "type": type,
+            "data": payload
+        ]
+
+        if session.isReachable {
+            session.sendMessage(message, replyHandler: nil) { error in
+                print("Failed to send \(type) payload: \(error.localizedDescription)")
+            }
+        } else {
+            session.transferUserInfo(message)
+        }
+    }
+}
+
+private final class WatchSyncDelegate: NSObject, WCSessionDelegate {
+    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) { }
+
+    func sessionDidBecomeInactive(_ session: WCSession) { }
+
+    func sessionDidDeactivate(_ session: WCSession) {
+        session.activate()
+    }
+}
+#endif

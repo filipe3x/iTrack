@@ -15,6 +15,8 @@ class WatchConnectivityManager: NSObject, ObservableObject {
 
     @Published var isWatchAppInstalled = false
     @Published var isReachable = false
+    @Published var latestHeartRate: Double?
+    @Published var latestHeartRateTimestamp: Date?
 
     private let session: WCSession? = WCSession.isSupported() ? WCSession.default : nil
 
@@ -31,7 +33,19 @@ class WatchConnectivityManager: NSObject, ObservableObject {
         }
 
         session.delegate = self
+        updateState(from: session)
         session.activate()
+    }
+
+    private func updateState(from session: WCSession) {
+        DispatchQueue.main.async {
+            self.isWatchAppInstalled = session.isWatchAppInstalled
+            self.isReachable = session.isReachable
+
+            if session.isReachable {
+                self.requestCurrentHeartRate()
+            }
+        }
     }
 
     // MARK: - Send Data to Watch
@@ -57,6 +71,24 @@ class WatchConnectivityManager: NSObject, ObservableObject {
             }
         } catch {
             print("Failed to encode settings: \(error.localizedDescription)")
+        }
+    }
+
+    /// Send full event history to watch
+    func sendEventsData(_ data: Data) {
+        guard let session = session else { return }
+
+        let message: [String: Any] = [
+            "type": "events",
+            "data": data
+        ]
+
+        if session.isReachable {
+            session.sendMessage(message, replyHandler: nil) { error in
+                print("Failed to send events: \(error.localizedDescription)")
+            }
+        } else {
+            session.transferUserInfo(message)
         }
     }
 
@@ -107,6 +139,22 @@ class WatchConnectivityManager: NSObject, ObservableObject {
         }
     }
 
+    /// Request the latest heart rate sample from the watch
+    func requestCurrentHeartRate() {
+        guard let session = session, session.isReachable else { return }
+
+        let message = ["type": "heartRateRequest"]
+
+        session.sendMessage(message, replyHandler: { reply in
+            if let bpm = reply["bpm"] as? Double {
+                let timestamp = reply["timestamp"] as? TimeInterval
+                self.updateHeartRate(bpm: bpm, timestamp: timestamp)
+            }
+        }) { error in
+            print("Failed to request heart rate: \(error.localizedDescription)")
+        }
+    }
+
     // MARK: - Process Received Data
 
     private func processReceivedEvents(_ data: Data) {
@@ -118,7 +166,7 @@ class WatchConnectivityManager: NSObject, ObservableObject {
             for event in events {
                 let existingEvents = DataManager.shared.loadAllEvents()
                 if !existingEvents.contains(where: { $0.id == event.id }) {
-                    DataManager.shared.saveEvent(event)
+                    DataManager.shared.saveEvent(event, shouldSync: false)
                 }
             }
         } catch {
@@ -130,9 +178,18 @@ class WatchConnectivityManager: NSObject, ObservableObject {
         do {
             let decoder = JSONDecoder()
             let settings = try decoder.decode(UserSettings.self, from: data)
-            DataManager.shared.saveSettings(settings)
+            DataManager.shared.saveSettings(settings, shouldSync: false)
         } catch {
             print("Failed to decode settings: \(error.localizedDescription)")
+        }
+    }
+
+    private func updateHeartRate(bpm: Double, timestamp: TimeInterval?) {
+        let date = timestamp.map { Date(timeIntervalSince1970: $0) }
+
+        DispatchQueue.main.async {
+            self.latestHeartRate = bpm
+            self.latestHeartRateTimestamp = date
         }
     }
 }
@@ -141,15 +198,16 @@ class WatchConnectivityManager: NSObject, ObservableObject {
 
 extension WatchConnectivityManager: WCSessionDelegate {
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
-        DispatchQueue.main.async {
-            self.isWatchAppInstalled = session.isWatchAppInstalled
-            self.isReachable = session.isReachable
-        }
+        updateState(from: session)
 
         if let error = error {
             print("WCSession activation failed: \(error.localizedDescription)")
         } else {
             print("WCSession activated with state: \(activationState.rawValue)")
+
+            if session.isReachable {
+                requestCurrentHeartRate()
+            }
         }
     }
 
@@ -164,10 +222,12 @@ extension WatchConnectivityManager: WCSessionDelegate {
     }
 
     func sessionReachabilityDidChange(_ session: WCSession) {
-        DispatchQueue.main.async {
-            self.isReachable = session.isReachable
-            print("Watch reachability changed: \(session.isReachable)")
-        }
+        updateState(from: session)
+        print("Watch reachability changed: \(session.isReachable)")
+    }
+
+    func sessionWatchStateDidChange(_ session: WCSession) {
+        updateState(from: session)
     }
 
     // MARK: - Receive Messages
@@ -177,9 +237,40 @@ extension WatchConnectivityManager: WCSessionDelegate {
     }
 
     func session(_ session: WCSession, didReceiveMessage message: [String : Any], replyHandler: @escaping ([String : Any]) -> Void) {
+        if let type = message["type"] as? String {
+            switch type {
+            case "eventsRequest":
+                if let data = try? JSONEncoder().encode(DataManager.shared.loadAllEvents()) {
+                    replyHandler(["events": data])
+                } else {
+                    replyHandler([:])
+                }
+                return
+            case "statusRequest":
+                replyHandler(["isMonitoring": false])
+                return
+            case "settingsRequest":
+                if let data = try? JSONEncoder().encode(DataManager.shared.settings) {
+                    replyHandler(["data": data])
+                } else {
+                    replyHandler([:])
+                }
+                return
+            case "heartRate":
+                if let bpm = message["bpm"] as? Double {
+                    let timestamp = message["timestamp"] as? TimeInterval
+                    updateHeartRate(bpm: bpm, timestamp: timestamp)
+                }
+                replyHandler(["status": "received"])
+                return
+            default:
+                break
+            }
+        }
+
         handleReceivedMessage(message)
 
-        // Send reply if needed
+        // Send acknowledgement
         replyHandler(["status": "received"])
     }
 
@@ -207,6 +298,18 @@ extension WatchConnectivityManager: WCSessionDelegate {
             // Received monitoring status update
             if let isMonitoring = message["isMonitoring"] as? Bool {
                 print("Watch monitoring status: \(isMonitoring)")
+            }
+
+        case "events":
+            // Received a full events sync
+            if let eventsData = message["data"] as? Data {
+                processReceivedEvents(eventsData)
+            }
+
+        case "heartRate":
+            if let bpm = message["bpm"] as? Double {
+                let timestamp = message["timestamp"] as? TimeInterval
+                updateHeartRate(bpm: bpm, timestamp: timestamp)
             }
 
         default:

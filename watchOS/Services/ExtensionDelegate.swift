@@ -7,6 +7,7 @@
 
 import WatchKit
 import UserNotifications
+import WatchConnectivity
 
 class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenterDelegate {
 
@@ -18,6 +19,9 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
 
         // Set notification delegate
         UNUserNotificationCenter.current().delegate = self
+
+        // Initialize WatchConnectivity for communication with iPhone
+        WatchConnectivityManager.shared.activate()
     }
 
     func applicationDidBecomeActive() {

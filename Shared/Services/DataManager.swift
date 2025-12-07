@@ -8,6 +8,10 @@
 import Foundation
 import Combine
 
+#if canImport(WatchConnectivity)
+import WatchConnectivity
+#endif
+
 /// Manages persistent storage of events, sessions, and settings
 class DataManager: ObservableObject {
     static let shared = DataManager()
@@ -40,7 +44,7 @@ class DataManager: ObservableObject {
     // MARK: - Settings Management
 
     /// Save user settings
-    func saveSettings(_ settings: UserSettings) {
+    func saveSettings(_ settings: UserSettings, shouldSync: Bool = true) {
         self.settings = settings
 
         if let encoded = try? encoder.encode(settings) {
@@ -48,7 +52,9 @@ class DataManager: ObservableObject {
         }
 
         // Sync to watch/phone via WatchConnectivity
-        syncSettings()
+        if shouldSync {
+            syncSettings()
+        }
     }
 
     /// Update a specific setting
@@ -61,7 +67,7 @@ class DataManager: ObservableObject {
     // MARK: - Event Management
 
     /// Save a detection event
-    func saveEvent(_ event: DetectionEvent) {
+    func saveEvent(_ event: DetectionEvent, shouldSync: Bool = true) {
         var events = loadAllEvents()
         events.append(event)
 
@@ -84,11 +90,14 @@ class DataManager: ObservableObject {
         }
 
         loadEvents()
-        syncEvents()
+
+        if shouldSync {
+            syncEvents()
+        }
     }
 
     /// Update an existing event
-    func updateEvent(_ event: DetectionEvent) {
+    func updateEvent(_ event: DetectionEvent, shouldSync: Bool = true) {
         var events = loadAllEvents()
 
         if let index = events.firstIndex(where: { $0.id == event.id }) {
@@ -99,7 +108,10 @@ class DataManager: ObservableObject {
             }
 
             loadEvents()
-            syncEvents()
+
+            if shouldSync {
+                syncEvents()
+            }
         }
     }
 
@@ -235,10 +247,57 @@ class DataManager: ObservableObject {
     // MARK: - Sync (placeholder for WatchConnectivity)
 
     private func syncSettings() {
-        // Will be implemented in WatchConnectivityManager
+        #if canImport(WatchConnectivity)
+        guard let encodedSettings = try? encoder.encode(settings) else { return }
+        WatchSyncBridge.send(type: "settings", payload: encodedSettings)
+        #endif
     }
 
     private func syncEvents() {
-        // Will be implemented in WatchConnectivityManager
+        #if canImport(WatchConnectivity)
+        guard let encodedEvents = try? encoder.encode(loadAllEvents()) else { return }
+        WatchSyncBridge.send(type: "events", payload: encodedEvents)
+        #endif
     }
 }
+
+#if canImport(WatchConnectivity)
+private enum WatchSyncBridge {
+    private static let delegate = WatchSyncDelegate()
+
+    static func send(type: String, payload: Data) {
+        guard WCSession.isSupported() else { return }
+
+        let session = WCSession.default
+        if session.delegate == nil {
+            session.delegate = delegate
+            session.activate()
+        }
+
+        let message: [String: Any] = [
+            "type": type,
+            "data": payload
+        ]
+
+        if session.isReachable {
+            session.sendMessage(message, replyHandler: nil) { error in
+                print("Failed to send \(type) payload: \(error.localizedDescription)")
+            }
+        } else {
+            session.transferUserInfo(message)
+        }
+    }
+}
+
+private final class WatchSyncDelegate: NSObject, WCSessionDelegate {
+    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) { }
+
+    #if os(iOS)
+    func sessionDidBecomeInactive(_ session: WCSession) { }
+
+    func sessionDidDeactivate(_ session: WCSession) {
+        session.activate()
+    }
+    #endif
+}
+#endif
