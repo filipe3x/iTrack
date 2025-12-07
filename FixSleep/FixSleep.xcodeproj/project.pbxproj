@@ -50,6 +50,7 @@
 		774B4AC12EE4CC50009FB253 /* MonitoringView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4AB12EE4CC50009FB253 /* MonitoringView.swift */; };
 		774B4AC22EE4CC50009FB253 /* EventListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4AB22EE4CC50009FB253 /* EventListView.swift */; };
 		774B4AC32EE4CC50009FB253 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4AB32EE4CC50009FB253 /* SettingsView.swift */; };
+		FW1KFA831QA4M99JJV2IURPR /* CustomSensitivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = TZUBOQ2SUUSYSE13VZ1FTGDD /* CustomSensitivityView.swift */; };
 		774B4AC42EE4CC50009FB253 /* HeartRateMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4AB42EE4CC50009FB253 /* HeartRateMonitor.swift */; };
 		774B4AC52EE4CC50009FB253 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4AB52EE4CC50009FB253 /* ExtensionDelegate.swift */; };
 		774B4AC62EE4CC50009FB253 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4AB62EE4CC50009FB253 /* HapticManager.swift */; };
@@ -125,6 +126,7 @@
 		774B4AB12EE4CC50009FB253 /* MonitoringView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitoringView.swift; sourceTree = "<group>"; };
 		774B4AB22EE4CC50009FB253 /* EventListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventListView.swift; sourceTree = "<group>"; };
 		774B4AB32EE4CC50009FB253 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		TZUBOQ2SUUSYSE13VZ1FTGDD /* CustomSensitivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSensitivityView.swift; sourceTree = "<group>"; };
 		774B4AB42EE4CC50009FB253 /* HeartRateMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartRateMonitor.swift; sourceTree = "<group>"; };
 		774B4AB52EE4CC50009FB253 /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
 		774B4AB62EE4CC50009FB253 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
@@ -291,6 +293,7 @@
 				774B4AB12EE4CC50009FB253 /* MonitoringView.swift */,
 				774B4AB22EE4CC50009FB253 /* EventListView.swift */,
 				774B4AB32EE4CC50009FB253 /* SettingsView.swift */,
+				TZUBOQ2SUUSYSE13VZ1FTGDD /* CustomSensitivityView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -654,6 +657,7 @@
 				774B4AC12EE4CC50009FB253 /* MonitoringView.swift in Sources */,
 				774B4AC22EE4CC50009FB253 /* EventListView.swift in Sources */,
 				774B4AC32EE4CC50009FB253 /* SettingsView.swift in Sources */,
+				FW1KFA831QA4M99JJV2IURPR /* CustomSensitivityView.swift in Sources */,
 				774B4AC42EE4CC50009FB253 /* HeartRateMonitor.swift in Sources */,
 				774B4AC52EE4CC50009FB253 /* ExtensionDelegate.swift in Sources */,
 				774B4AC62EE4CC50009FB253 /* HapticManager.swift in Sources */,
