@@ -208,19 +208,23 @@ class DataManager: ObservableObject {
         let events = loadAllEvents()
         var csv = "ID,Timestamp,Type,HeartRate,Baseline,HRV,Confidence,Response,Delta,MovementSuppressed\n"
 
+        let dateFormatter = ISO8601DateFormatter()
+
         for event in events {
-            let row = [
-                event.id.uuidString,
-                ISO8601DateFormatter().string(from: event.timestamp),
-                event.detectionType.rawValue,
-                String(event.heartRateAtDetection),
-                event.baselineHeartRate.map(String.init) ?? "",
-                event.hrvAtDetection.map(String.init) ?? "",
-                String(event.confidence),
-                event.alertResponse.rawValue,
-                event.deltaFromBaseline.map(String.init) ?? "",
-                String(event.wasMovementSuppressed)
-            ].map { "\"\($0)\"" }.joined(separator: ",")
+            // Break up the complex expression into separate steps
+            let id = event.id.uuidString
+            let timestamp = dateFormatter.string(from: event.timestamp)
+            let type = event.detectionType.rawValue
+            let heartRate = String(event.heartRateAtDetection)
+            let baseline = event.baselineHeartRate.map(String.init) ?? ""
+            let hrv = event.hrvAtDetection.map(String.init) ?? ""
+            let confidence = String(event.confidence)
+            let response = event.alertResponse.rawValue
+            let delta = event.deltaFromBaseline.map(String.init) ?? ""
+            let movement = String(event.wasMovementSuppressed)
+
+            let fields: [String] = [id, timestamp, type, heartRate, baseline, hrv, confidence, response, delta, movement]
+            let row = fields.map { "\"\($0)\"" }.joined(separator: ",")
 
             csv += row + "\n"
         }
