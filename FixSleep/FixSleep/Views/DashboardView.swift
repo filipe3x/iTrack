@@ -48,17 +48,99 @@ struct DashboardView: View {
     }
 
     private var watchStatusCard: some View {
-        ThemeInfoCard(
-            icon: AppIcons.watch,
-            title: "Apple Watch",
-            subtitle: watchConnectivity.isWatchAppInstalled ? "Conectado" : "Desconectado",
-            description: watchConnectivity.isWatchAppInstalled
-                ? "O seu Apple Watch está sincronizado e pronto"
-                : "Instale FixSleep no Apple Watch para começar",
-            accentColor: watchConnectivity.isWatchAppInstalled
-                ? AppTheme.Accent.mint
-                : AppTheme.Accent.rose
-        )
+        VStack(alignment: .leading, spacing: AppTheme.Spacing.md) {
+            HStack(alignment: .center, spacing: AppTheme.Spacing.md) {
+                ThemedIcon(AppIcons.watch, size: 22, color: watchStatusAccent)
+
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Apple Watch")
+                        .font(AppTheme.Typography.body(weight: .medium))
+                        .foregroundColor(AppTheme.Text.primary)
+
+                    HStack(spacing: AppTheme.Spacing.xs) {
+                        ThemeStatusBadge(watchStatusLabel, color: watchStatusAccent, icon: watchStatusIcon)
+
+                        if watchConnectivity.isReachable {
+                            ThemeStatusBadge("Ligação direta", color: AppTheme.Accent.mint, icon: "antenna.radiowaves.left.and.right")
+                        }
+
+                        if let responded = watchConnectivity.lastHandshakeSucceeded {
+                            ThemeStatusBadge(
+                                responded ? "Resposta recebida" : "Sem resposta",
+                                color: responded ? AppTheme.Accent.mint : AppTheme.Accent.chamomile,
+                                icon: responded ? "checkmark" : "exclamationmark.triangle.fill"
+                            )
+                        }
+                    }
+                }
+
+                Spacer()
+
+                Button(action: { watchConnectivity.probeConnection() }) {
+                    HStack(spacing: AppTheme.Spacing.xs) {
+                        Image(systemName: "arrow.clockwise")
+                        Text("Verificar")
+                    }
+                    .font(AppTheme.Typography.caption(weight: .medium))
+                    .foregroundColor(AppTheme.Text.primary)
+                    .padding(.horizontal, AppTheme.Spacing.md)
+                    .padding(.vertical, AppTheme.Spacing.xs)
+                    .background(Color.white.opacity(0.05))
+                    .cornerRadius(AppTheme.CornerRadius.md)
+                }
+            }
+
+            Text(watchStatusDescription)
+                .font(AppTheme.Typography.caption(weight: .light))
+                .foregroundColor(AppTheme.Text.secondary)
+                .lineSpacing(3)
+
+            Divider()
+                .background(AppTheme.Border.subtle)
+
+            VStack(spacing: AppTheme.Spacing.sm) {
+                ThemeValueRow(
+                    label: "Emparelhamento",
+                    value: watchConnectivity.isPaired ? "Apple Watch encontrado" : "Nenhum relógio emparelhado",
+                    icon: watchConnectivity.isPaired ? "link" : "link.badge.plus",
+                    accentColor: watchConnectivity.isPaired ? AppTheme.Accent.mint : AppTheme.Accent.rose
+                )
+
+                ThemeValueRow(
+                    label: "App FixSleep",
+                    value: watchConnectivity.isWatchAppInstalled ? "Instalada no relógio" : "Instale via App Store",
+                    icon: watchConnectivity.isWatchAppInstalled ? "applewatch" : "square.and.arrow.down",
+                    accentColor: watchConnectivity.isWatchAppInstalled ? AppTheme.Accent.mint : AppTheme.Accent.chamomile
+                )
+
+                ThemeValueRow(
+                    label: "Estado da ligação",
+                    value: watchConnectivity.isReachable ? "Ligado agora" : "Sem ligação direta",
+                    icon: watchConnectivity.isReachable ? "antenna.radiowaves.left.and.right" : "antenna.radiowaves.left.and.right.slash",
+                    accentColor: watchConnectivity.isReachable ? AppTheme.Accent.mint : AppTheme.Accent.rose
+                )
+
+                ThemeValueRow(
+                    label: "Última verificação",
+                    value: lastWatchCheckLabel,
+                    icon: "clock",
+                    accentColor: AppTheme.Accent.lavender
+                )
+
+                if let error = watchConnectivity.lastHandshakeError {
+                    ThemeValueRow(
+                        label: "Aviso",
+                        value: error,
+                        icon: "exclamationmark.triangle.fill",
+                        accentColor: AppTheme.Accent.rose
+                    )
+                }
+            }
+        }
+        .themeElevatedCard(padding: AppTheme.Spacing.lg)
+        .onAppear {
+            watchConnectivity.probeConnection()
+        }
     }
 
     private var sleepWindowCard: some View {
@@ -264,6 +346,97 @@ struct DashboardView: View {
         let formatter = RelativeDateTimeFormatter()
         formatter.unitsStyle = .abbreviated
         return formatter.localizedString(for: date, relativeTo: Date())
+    }
+
+    private var watchStatusAccent: Color {
+        switch watchStatusState {
+        case .unsupported, .notPaired: return AppTheme.Accent.rose
+        case .missingApp: return AppTheme.Accent.chamomile
+        case .reachable: return AppTheme.Accent.mint
+        case .unreachable, .awaitingResponse: return AppTheme.Accent.lavender
+        }
+    }
+
+    private var watchStatusLabel: String {
+        switch watchStatusState {
+        case .unsupported: return "Sem suporte"
+        case .notPaired: return "Sem relógio"
+        case .missingApp: return "App em falta"
+        case .unreachable: return "Indisponível"
+        case .awaitingResponse: return "A verificar"
+        case .reachable: return "Conectado"
+        }
+    }
+
+    private var watchStatusIcon: String {
+        switch watchStatusState {
+        case .unsupported: return "bolt.slash"
+        case .notPaired: return "link.badge.plus"
+        case .missingApp: return "square.and.arrow.down"
+        case .unreachable: return "wifi.slash"
+        case .awaitingResponse: return "arrow.triangle.2.circlepath"
+        case .reachable: return "checkmark.seal.fill"
+        }
+    }
+
+    private var watchStatusDescription: String {
+        switch watchStatusState {
+        case .unsupported:
+            return "Este dispositivo não suporta comunicação com Apple Watch."
+        case .notPaired:
+            return "Não encontrámos um Apple Watch emparelhado. Emparelhe-o na app Watch do iPhone."
+        case .missingApp:
+            return "Detectámos o relógio, mas a app FixSleep não está instalada. Instale no Apple Watch para sincronizar."
+        case .unreachable:
+            return "O relógio está emparelhado, mas não conseguimos contacto agora. Abra o FixSleep no Apple Watch e mantenha-o próximo."
+        case .awaitingResponse:
+            return "Estamos a contactar o seu Apple Watch para confirmar a ligação e o estado da app."
+        case .reachable:
+            if let lastCheck = watchConnectivity.lastStatusCheck {
+                return "Ligação ativa ao relógio. Última resposta: \(formatRelativeTime(lastCheck))."
+            }
+            return "Ligação ativa ao relógio."
+        }
+    }
+
+    private var lastWatchCheckLabel: String {
+        if let last = watchConnectivity.lastStatusCheck {
+            return formatRelativeTime(last)
+        }
+        return "Ainda sem verificações"
+    }
+
+    private enum WatchStatusState {
+        case unsupported
+        case notPaired
+        case missingApp
+        case unreachable
+        case awaitingResponse
+        case reachable
+    }
+
+    private var watchStatusState: WatchStatusState {
+        if !watchConnectivity.isSupported {
+            return .unsupported
+        }
+
+        if !watchConnectivity.isPaired {
+            return .notPaired
+        }
+
+        if !watchConnectivity.isWatchAppInstalled {
+            return .missingApp
+        }
+
+        if watchConnectivity.isReachable {
+            if watchConnectivity.lastHandshakeSucceeded == true {
+                return .reachable
+            } else {
+                return .awaitingResponse
+            }
+        }
+
+        return .unreachable
     }
 }
 

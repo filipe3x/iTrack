@@ -13,8 +13,14 @@ import Combine
 class WatchConnectivityManager: NSObject, ObservableObject {
     static let shared = WatchConnectivityManager()
 
+    @Published var isSupported = WCSession.isSupported()
+    @Published var isPaired = false
     @Published var isWatchAppInstalled = false
     @Published var isReachable = false
+    @Published var activationState: WCSessionActivationState = .notActivated
+    @Published var lastStatusCheck: Date?
+    @Published var lastHandshakeSucceeded: Bool?
+    @Published var lastHandshakeError: String?
 
     private let session: WCSession? = WCSession.isSupported() ? WCSession.default : nil
 
@@ -30,23 +36,91 @@ class WatchConnectivityManager: NSObject, ObservableObject {
             return
         }
 
-        session.delegate = self
-        updateState(from: session)
-        session.activate()
+        DispatchQueue.main.async {
+            session.delegate = self
+            self.updateState(from: session)
+            if session.activationState == .notActivated {
+                session.activate()
+            }
+        }
+    }
+
+    /// Ensures the WCSession is activated before attempting to use it.
+    private func readySession() -> WCSession? {
+        guard let session = session else { return nil }
+
+        if session.activationState != .activated {
+            activate()
+            return nil
+        }
+
+        return session
     }
 
     private func updateState(from session: WCSession) {
         DispatchQueue.main.async {
+            self.isPaired = session.isPaired
             self.isWatchAppInstalled = session.isWatchAppInstalled
             self.isReachable = session.isReachable
+            self.activationState = session.activationState
+            self.lastStatusCheck = Date()
         }
+    }
+
+    /// Attempts to reach the watch and records whether we heard back.
+    func probeConnection() {
+        guard let session = readySession() else {
+            DispatchQueue.main.async {
+                self.lastHandshakeSucceeded = false
+                self.lastHandshakeError = "WatchConnectivity não está disponível neste dispositivo."
+                self.lastStatusCheck = Date()
+            }
+            return
+        }
+        updateState(from: session)
+
+        guard session.isReachable else {
+            DispatchQueue.main.async {
+                self.lastHandshakeSucceeded = false
+                self.lastHandshakeError = "Abra o FixSleep no Apple Watch para ligar."
+                self.lastStatusCheck = Date()
+            }
+            return
+        }
+
+        let payload: [String: Any] = [
+            "type": "ping",
+            "timestamp": Date().timeIntervalSince1970
+        ]
+
+        session.sendMessage(
+            payload,
+            replyHandler: { reply in
+                DispatchQueue.main.async {
+                    self.lastHandshakeSucceeded = true
+                    self.lastHandshakeError = nil
+                    self.lastStatusCheck = Date()
+
+                    if let isMonitoring = reply["isMonitoring"] as? Bool {
+                        print("Watch monitoring: \(isMonitoring)")
+                    }
+                }
+            },
+            errorHandler: { error in
+                DispatchQueue.main.async {
+                    self.lastHandshakeSucceeded = false
+                    self.lastHandshakeError = error.localizedDescription
+                    self.lastStatusCheck = Date()
+                }
+            }
+        )
     }
 
     // MARK: - Send Data to Watch
 
     /// Send settings to watch
     func sendSettings(_ settings: UserSettings) {
-        guard let session = session, session.isReachable else {
+        guard let session = readySession(), session.isReachable else {
             print("Watch not reachable")
             return
         }
@@ -70,7 +144,7 @@ class WatchConnectivityManager: NSObject, ObservableObject {
 
     /// Send full event history to watch
     func sendEventsData(_ data: Data) {
-        guard let session = session else { return }
+        guard let session = readySession() else { return }
 
         let message: [String: Any] = [
             "type": "events",
@@ -88,7 +162,7 @@ class WatchConnectivityManager: NSObject, ObservableObject {
 
     /// Transfer user info (for background sync)
     func transferUserInfo(_ info: [String: Any]) {
-        guard let session = session else { return }
+        guard let session = readySession() else { return }
         session.transferUserInfo(info)
     }
 
@@ -96,7 +170,7 @@ class WatchConnectivityManager: NSObject, ObservableObject {
 
     /// Request current monitoring status from watch
     func requestMonitoringStatus(completion: @escaping (Bool) -> Void) {
-        guard let session = session, session.isReachable else {
+        guard let session = readySession(), session.isReachable else {
             completion(false)
             return
         }
@@ -117,7 +191,7 @@ class WatchConnectivityManager: NSObject, ObservableObject {
 
     /// Request recent events from watch
     func requestRecentEvents() {
-        guard let session = session, session.isReachable else {
+        guard let session = readySession(), session.isReachable else {
             print("Watch not reachable")
             return
         }
@@ -168,11 +242,17 @@ class WatchConnectivityManager: NSObject, ObservableObject {
 extension WatchConnectivityManager: WCSessionDelegate {
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
         updateState(from: session)
+        DispatchQueue.main.async {
+            self.activationState = activationState
+        }
 
         if let error = error {
             print("WCSession activation failed: \(error.localizedDescription)")
         } else {
             print("WCSession activated with state: \(activationState.rawValue)")
+            if activationState == .activated {
+                self.probeConnection()
+            }
         }
     }
 

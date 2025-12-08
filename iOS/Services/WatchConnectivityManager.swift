@@ -13,8 +13,14 @@ import Combine
 class WatchConnectivityManager: NSObject, ObservableObject {
     static let shared = WatchConnectivityManager()
 
+    @Published var isSupported = WCSession.isSupported()
+    @Published var isPaired = false
     @Published var isWatchAppInstalled = false
     @Published var isReachable = false
+    @Published var activationState: WCSessionActivationState = .notActivated
+    @Published var lastStatusCheck: Date?
+    @Published var lastHandshakeSucceeded: Bool?
+    @Published var lastHandshakeError: String?
     @Published var latestHeartRate: Double?
     @Published var latestHeartRateTimestamp: Date?
 
@@ -39,13 +45,69 @@ class WatchConnectivityManager: NSObject, ObservableObject {
 
     private func updateState(from session: WCSession) {
         DispatchQueue.main.async {
+            self.isPaired = session.isPaired
             self.isWatchAppInstalled = session.isWatchAppInstalled
             self.isReachable = session.isReachable
+            self.activationState = session.activationState
+            self.lastStatusCheck = Date()
 
             if session.isReachable {
                 self.requestCurrentHeartRate()
             }
         }
+    }
+
+    /// Attempts to contact the watch and records the result.
+    func probeConnection() {
+        guard let session = session else {
+            DispatchQueue.main.async {
+                self.lastHandshakeSucceeded = false
+                self.lastHandshakeError = "WatchConnectivity não está disponível neste dispositivo."
+                self.lastStatusCheck = Date()
+            }
+            return
+        }
+
+        updateState(from: session)
+
+        guard session.isReachable else {
+            DispatchQueue.main.async {
+                self.lastHandshakeSucceeded = false
+                self.lastHandshakeError = "Abra o FixSleep no Apple Watch para ligar."
+                self.lastStatusCheck = Date()
+            }
+            return
+        }
+
+        let payload: [String: Any] = [
+            "type": "ping",
+            "timestamp": Date().timeIntervalSince1970
+        ]
+
+        session.sendMessage(
+            payload,
+            replyHandler: { reply in
+                DispatchQueue.main.async {
+                    self.lastHandshakeSucceeded = true
+                    self.lastHandshakeError = nil
+                    self.lastStatusCheck = Date()
+
+                    if let bpm = reply["bpm"] as? Double {
+                        let timestamp = reply["timestamp"] as? TimeInterval
+                        self.updateHeartRate(bpm: bpm, timestamp: timestamp)
+                    } else {
+                        self.requestCurrentHeartRate()
+                    }
+                }
+            },
+            errorHandler: { error in
+                DispatchQueue.main.async {
+                    self.lastHandshakeSucceeded = false
+                    self.lastHandshakeError = error.localizedDescription
+                    self.lastStatusCheck = Date()
+                }
+            }
+        )
     }
 
     // MARK: - Send Data to Watch
@@ -199,6 +261,9 @@ class WatchConnectivityManager: NSObject, ObservableObject {
 extension WatchConnectivityManager: WCSessionDelegate {
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
         updateState(from: session)
+        DispatchQueue.main.async {
+            self.activationState = activationState
+        }
 
         if let error = error {
             print("WCSession activation failed: \(error.localizedDescription)")
@@ -262,6 +327,13 @@ extension WatchConnectivityManager: WCSessionDelegate {
                     updateHeartRate(bpm: bpm, timestamp: timestamp)
                 }
                 replyHandler(["status": "received"])
+                return
+            case "pong":
+                if let bpm = message["bpm"] as? Double {
+                    let timestamp = message["timestamp"] as? TimeInterval
+                    updateHeartRate(bpm: bpm, timestamp: timestamp)
+                }
+                replyHandler(["status": "acknowledged"])
                 return
             default:
                 break

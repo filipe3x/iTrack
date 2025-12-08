@@ -23,7 +23,7 @@
 	<key>WKApplication</key>
 	<true/>
 	<key>WKWatchOnly</key>
-	<true/>
+	<false/>
 
 	<!-- HealthKit Permissions -->
 	<key>NSHealthShareUsageDescription</key>

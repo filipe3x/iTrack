@@ -1,6 +1,6 @@
 //
 //  WatchConnectivityManager.swift
-//  iTrack WatchKit Extension
+//  FixSleep Watch Watch App
 //
 //  Manages communication between Apple Watch and iPhone
 //

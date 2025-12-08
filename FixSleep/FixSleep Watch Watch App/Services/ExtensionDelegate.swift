@@ -13,6 +13,9 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
     func applicationDidFinishLaunching() {
         print("FixSleep Watch Extension launched")
 
+        // Start WatchConnectivity so the phone can see this watch app immediately
+        WatchConnectivityManager.shared.activate()
+
         // Setup notification categories
         HapticManager.shared.setupNotificationCategories()
 
@@ -72,7 +75,8 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
         if #available(watchOS 8.0, *) {
             completionHandler([.banner, .sound])
         } else {
-            completionHandler([.alert, .sound])
+            // On older watchOS we only play sound to avoid deprecated .alert
+            completionHandler([.sound])
         }
     }
 
