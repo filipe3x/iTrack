@@ -370,7 +370,7 @@ extension WatchConnectivityManager: WCSessionDelegate {
             switch type {
             case "settingsRequest":
                 // Watch is requesting latest settings
-                let settings = DataManager.shared.loadSettings()
+                let settings = DataManager.shared.settings
                 if let data = try? JSONEncoder().encode(settings) {
                     replyHandler(["data": data])
                 } else {
