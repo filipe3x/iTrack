@@ -20,6 +20,20 @@
                ReferencedContainer = "container:FixSleep.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "773019E22EE4BEA80033EB26"
+               BuildableName = "FixSleep Watch Watch App.app"
+               BlueprintName = "FixSleep Watch Watch App"
+               ReferencedContainer = "container:FixSleep.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
