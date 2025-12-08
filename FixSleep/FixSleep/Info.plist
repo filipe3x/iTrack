@@ -3,12 +3,17 @@
 <plist version="1.0">
 <dict>
         <key>UIBackgroundModes</key>
-        <array>
-                <string>remote-notification</string>
-        </array>
-        <key>NSHealthShareUsageDescription</key>
-        <string>Sleep tracker needs access to read your Health data to provide accurate insights.</string>
-        <key>NSHealthUpdateUsageDescription</key>
-        <string>Sleep tracker writes sleep data to Health to keep your records up to date.</string>
+	<array>
+		<string>remote-notification</string>
+	</array>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<false/>
+	</dict>
+	<key>NSHealthShareUsageDescription</key>
+	<string>Sleep tracker needs access to read your Health data to provide accurate insights.</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>Sleep tracker writes sleep data to Health to keep your records up to date.</string>
 </dict>
 </plist>

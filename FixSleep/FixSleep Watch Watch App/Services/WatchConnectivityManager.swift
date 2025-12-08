@@ -16,6 +16,8 @@ class WatchConnectivityManager: NSObject, ObservableObject {
     @Published var isiPhoneReachable = false
     @Published var lastSentHeartRate: Double?
     @Published var lastSentTimestamp: Date?
+    @Published var isiPhonePaired = false
+    @Published var isiOSAppInstalled = false
 
     private let session: WCSession? = WCSession.isSupported() ? WCSession.default : nil
 
@@ -37,9 +39,30 @@ class WatchConnectivityManager: NSObject, ObservableObject {
 
     // MARK: - Send Data to iPhone
 
+    private func canSend(to session: WCSession?) -> WCSession? {
+        guard let session else { return nil }
+
+        guard isActivated(session) else {
+            print("WCSession cannot send: session not activated yet")
+            return nil
+        }
+
+        guard isPaired(session) else {
+            print("WCSession cannot send: iPhone not paired")
+            return nil
+        }
+
+        if !isCompanionAppInstalled(session) {
+            // In some setups the flag can be false even when the iOS app is present (e.g. during dev).
+            print("WCSession warning: iOS app reported as not installed; attempting to send anyway")
+        }
+
+        return session
+    }
+
     /// Send settings to iPhone
     func sendSettings(_ settings: UserSettings) {
-        guard let session = session else { return }
+        guard let session = canSend(to: session) else { return }
 
         do {
             let encoder = JSONEncoder()
@@ -64,7 +87,7 @@ class WatchConnectivityManager: NSObject, ObservableObject {
 
     /// Send the latest events to the paired iPhone
     func sendEventsData(_ data: Data) {
-        guard let session = session else { return }
+        guard let session = canSend(to: session) else { return }
 
         let message: [String: Any] = [
             "type": "events",
@@ -82,7 +105,7 @@ class WatchConnectivityManager: NSObject, ObservableObject {
 
     /// Send the most recent heart rate sample to the paired iPhone
     func sendHeartRate(_ bpm: Double, at timestamp: Date) {
-        guard let session = session, session.isReachable else { return }
+        guard let session = canSend(to: session), session.isReachable else { return }
 
         let message: [String: Any] = [
             "type": "heartRate",
@@ -104,7 +127,7 @@ class WatchConnectivityManager: NSObject, ObservableObject {
 
     /// Request the latest settings from iPhone
     func requestSettings(completion: @escaping (UserSettings?) -> Void) {
-        guard let session = session, session.isReachable else {
+        guard let session = canSend(to: session), session.isReachable else {
             completion(nil)
             return
         }
@@ -165,6 +188,39 @@ class WatchConnectivityManager: NSObject, ObservableObject {
             print("Failed to decode settings: \(error.localizedDescription)")
         }
     }
+
+    private func updateState(from session: WCSession) {
+        DispatchQueue.main.async {
+            self.isiPhonePaired = self.isPaired(session)
+            self.isiOSAppInstalled = self.isCompanionAppInstalled(session)
+            self.isiPhoneReachable = session.isReachable
+        }
+    }
+
+    private func isActivated(_ session: WCSession) -> Bool {
+        #if os(watchOS)
+        return session.activationState == .activated
+        #else
+        return true
+        #endif
+    }
+
+    private func isPaired(_ session: WCSession) -> Bool {
+        #if os(watchOS)
+        // watchOS does not expose WCSession.isPaired; if we're running on watchOS the watch is already paired.
+        return true
+        #else
+        return session.isPaired
+        #endif
+    }
+
+    private func isCompanionAppInstalled(_ session: WCSession) -> Bool {
+        #if os(watchOS)
+        return session.isCompanionAppInstalled
+        #else
+        return session.isWatchAppInstalled || session.isCompanionAppInstalled
+        #endif
+    }
 }
 
 // MARK: - WCSessionDelegate
@@ -172,6 +228,8 @@ class WatchConnectivityManager: NSObject, ObservableObject {
 extension WatchConnectivityManager: WCSessionDelegate {
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
         DispatchQueue.main.async {
+            self.isiPhonePaired = self.isPaired(session)
+            self.isiOSAppInstalled = self.isCompanionAppInstalled(session)
             self.isiPhoneReachable = session.isReachable
         }
 
@@ -190,6 +248,8 @@ extension WatchConnectivityManager: WCSessionDelegate {
 
     func sessionReachabilityDidChange(_ session: WCSession) {
         DispatchQueue.main.async {
+            self.isiPhonePaired = self.isPaired(session)
+            self.isiOSAppInstalled = self.isCompanionAppInstalled(session)
             self.isiPhoneReachable = session.isReachable
             print("iPhone reachability changed: \(session.isReachable)")
 

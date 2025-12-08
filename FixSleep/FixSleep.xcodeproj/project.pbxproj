@@ -7,12 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3FD49AE71F6573F35F2ADF0C /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77738FEA3FCE12F17CE4AE08 /* DashboardView.swift */; };
-		3B5ECFB3F3A4C14EF91FA90E /* EventLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7130F41E1CF47B58A52462A4 /* EventLogView.swift */; };
 		04EDA3FB21223534A87D2BBA /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3903C24ADE915E062C0A709 /* OnboardingView.swift */; };
-		E91300F0B9351F6696DB0DEC /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05EE1759FA8A5D914AE6B43D /* SettingsView.swift */; };
-		C75FD39211FB65E073E06050 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E6CA305937C42E1A7876E1 /* NotificationManager.swift */; };
-		AE506489D87F8F7567DB9BCB /* WatchConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC8832B09B74C12741E9DC4B /* WatchConnectivityManager.swift */; };
+		3B5ECFB3F3A4C14EF91FA90E /* EventLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7130F41E1CF47B58A52462A4 /* EventLogView.swift */; };
+		3FD49AE71F6573F35F2ADF0C /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77738FEA3FCE12F17CE4AE08 /* DashboardView.swift */; };
 		773019B62EE4BD140033EB26 /* FixSleepApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773019B52EE4BD140033EB26 /* FixSleepApp.swift */; };
 		773019B82EE4BD140033EB26 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773019B72EE4BD140033EB26 /* ContentView.swift */; };
 		773019BA2EE4BD160033EB26 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 773019B92EE4BD160033EB26 /* Assets.xcassets */; };
@@ -50,11 +47,15 @@
 		774B4AC12EE4CC50009FB253 /* MonitoringView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4AB12EE4CC50009FB253 /* MonitoringView.swift */; };
 		774B4AC22EE4CC50009FB253 /* EventListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4AB22EE4CC50009FB253 /* EventListView.swift */; };
 		774B4AC32EE4CC50009FB253 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4AB32EE4CC50009FB253 /* SettingsView.swift */; };
-		FW1KFA831QA4M99JJV2IURPR /* CustomSensitivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = TZUBOQ2SUUSYSE13VZ1FTGDD /* CustomSensitivityView.swift */; };
 		774B4AC42EE4CC50009FB253 /* HeartRateMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4AB42EE4CC50009FB253 /* HeartRateMonitor.swift */; };
 		774B4AC52EE4CC50009FB253 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4AB52EE4CC50009FB253 /* ExtensionDelegate.swift */; };
 		774B4AC62EE4CC50009FB253 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4AB62EE4CC50009FB253 /* HapticManager.swift */; };
 		774B4AC72EE4CC50009FB253 /* DetectionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4AB72EE4CC50009FB253 /* DetectionEngine.swift */; };
+		AE506489D87F8F7567DB9BCB /* WatchConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC8832B09B74C12741E9DC4B /* WatchConnectivityManager.swift */; };
+		B7AA0C3E2F11223344556678 /* WatchConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AA0C3E2F11223344556677 /* WatchConnectivityManager.swift */; };
+		C75FD39211FB65E073E06050 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E6CA305937C42E1A7876E1 /* NotificationManager.swift */; };
+		E91300F0B9351F6696DB0DEC /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05EE1759FA8A5D914AE6B43D /* SettingsView.swift */; };
+		FW1KFA831QA4M99JJV2IURPR /* CustomSensitivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = TZUBOQ2SUUSYSE13VZ1FTGDD /* CustomSensitivityView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,9 +87,19 @@
 			remoteGlobalIDString = 773019E22EE4BEA80033EB26;
 			remoteInfo = "FixSleep Watch Watch App";
 		};
+		77543F852EE70D450083D5DA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 773019AA2EE4BD140033EB26 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 773019E22EE4BEA80033EB26;
+			remoteInfo = "FixSleep Watch Watch App";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		05EE1759FA8A5D914AE6B43D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		52E6CA305937C42E1A7876E1 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		7130F41E1CF47B58A52462A4 /* EventLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventLogView.swift; sourceTree = "<group>"; };
 		773019B22EE4BD140033EB26 /* FixSleep.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FixSleep.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		773019B52EE4BD140033EB26 /* FixSleepApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixSleepApp.swift; sourceTree = "<group>"; };
 		773019B72EE4BD140033EB26 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -126,17 +137,15 @@
 		774B4AB12EE4CC50009FB253 /* MonitoringView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitoringView.swift; sourceTree = "<group>"; };
 		774B4AB22EE4CC50009FB253 /* EventListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventListView.swift; sourceTree = "<group>"; };
 		774B4AB32EE4CC50009FB253 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		TZUBOQ2SUUSYSE13VZ1FTGDD /* CustomSensitivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSensitivityView.swift; sourceTree = "<group>"; };
 		774B4AB42EE4CC50009FB253 /* HeartRateMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartRateMonitor.swift; sourceTree = "<group>"; };
 		774B4AB52EE4CC50009FB253 /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
 		774B4AB62EE4CC50009FB253 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		774B4AB72EE4CC50009FB253 /* DetectionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetectionEngine.swift; sourceTree = "<group>"; };
+		B7AA0C3E2F11223344556677 /* WatchConnectivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchConnectivityManager.swift; sourceTree = "<group>"; };
 		77738FEA3FCE12F17CE4AE08 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
-		7130F41E1CF47B58A52462A4 /* EventLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventLogView.swift; sourceTree = "<group>"; };
 		F3903C24ADE915E062C0A709 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
-		05EE1759FA8A5D914AE6B43D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		52E6CA305937C42E1A7876E1 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		FC8832B09B74C12741E9DC4B /* WatchConnectivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchConnectivityManager.swift; sourceTree = "<group>"; };
+		TZUBOQ2SUUSYSE13VZ1FTGDD /* CustomSensitivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSensitivityView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -185,6 +194,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		39510AD0A88ADE2AA39335CE /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				52E6CA305937C42E1A7876E1 /* NotificationManager.swift */,
+				FC8832B09B74C12741E9DC4B /* WatchConnectivityManager.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		52416F4493D744B1EC2AAF30 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				77738FEA3FCE12F17CE4AE08 /* DashboardView.swift */,
+				7130F41E1CF47B58A52462A4 /* EventLogView.swift */,
+				F3903C24ADE915E062C0A709 /* OnboardingView.swift */,
+				05EE1759FA8A5D914AE6B43D /* SettingsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		773019A92EE4BD140033EB26 = {
 			isa = PBXGroup;
 			children = (
@@ -235,26 +264,6 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		52416F4493D744B1EC2AAF30 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				77738FEA3FCE12F17CE4AE08 /* DashboardView.swift */,
-				7130F41E1CF47B58A52462A4 /* EventLogView.swift */,
-				F3903C24ADE915E062C0A709 /* OnboardingView.swift */,
-				05EE1759FA8A5D914AE6B43D /* SettingsView.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		39510AD0A88ADE2AA39335CE /* Services */ = {
-			isa = PBXGroup;
-			children = (
-				52E6CA305937C42E1A7876E1 /* NotificationManager.swift */,
-				FC8832B09B74C12741E9DC4B /* WatchConnectivityManager.swift */,
-			);
-			path = Services;
-			sourceTree = "<group>";
-		};
 		773019C52EE4BD160033EB26 /* FixSleepTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -285,28 +294,6 @@
 				773019EB2EE4BEAB0033EB26 /* Preview Content */,
 			);
 			path = "FixSleep Watch Watch App";
-			sourceTree = "<group>";
-		};
-		774B4AB82EE4CC50009FB253 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				774B4AB12EE4CC50009FB253 /* MonitoringView.swift */,
-				774B4AB22EE4CC50009FB253 /* EventListView.swift */,
-				774B4AB32EE4CC50009FB253 /* SettingsView.swift */,
-				TZUBOQ2SUUSYSE13VZ1FTGDD /* CustomSensitivityView.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		774B4AB92EE4CC50009FB253 /* Services */ = {
-			isa = PBXGroup;
-			children = (
-				774B4AB42EE4CC50009FB253 /* HeartRateMonitor.swift */,
-				774B4AB52EE4CC50009FB253 /* ExtensionDelegate.swift */,
-				774B4AB62EE4CC50009FB253 /* HapticManager.swift */,
-				774B4AB72EE4CC50009FB253 /* DetectionEngine.swift */,
-			);
-			path = Services;
 			sourceTree = "<group>";
 		};
 		773019EB2EE4BEAB0033EB26 /* Preview Content */ = {
@@ -384,6 +371,29 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
+		774B4AB82EE4CC50009FB253 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				774B4AB12EE4CC50009FB253 /* MonitoringView.swift */,
+				774B4AB22EE4CC50009FB253 /* EventListView.swift */,
+				774B4AB32EE4CC50009FB253 /* SettingsView.swift */,
+				TZUBOQ2SUUSYSE13VZ1FTGDD /* CustomSensitivityView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		774B4AB92EE4CC50009FB253 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				774B4AB42EE4CC50009FB253 /* HeartRateMonitor.swift */,
+				774B4AB52EE4CC50009FB253 /* ExtensionDelegate.swift */,
+				774B4AB62EE4CC50009FB253 /* HapticManager.swift */,
+				774B4AB72EE4CC50009FB253 /* DetectionEngine.swift */,
+				B7AA0C3E2F11223344556677 /* WatchConnectivityManager.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -398,6 +408,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				77543F862EE70D450083D5DA /* PBXTargetDependency */,
 			);
 			name = FixSleep;
 			productName = FixSleep;
@@ -659,6 +670,7 @@
 				774B4AC32EE4CC50009FB253 /* SettingsView.swift in Sources */,
 				FW1KFA831QA4M99JJV2IURPR /* CustomSensitivityView.swift in Sources */,
 				774B4AC42EE4CC50009FB253 /* HeartRateMonitor.swift in Sources */,
+				B7AA0C3E2F11223344556678 /* WatchConnectivityManager.swift in Sources */,
 				774B4AC52EE4CC50009FB253 /* ExtensionDelegate.swift in Sources */,
 				774B4AC62EE4CC50009FB253 /* HapticManager.swift in Sources */,
 				774B4AC72EE4CC50009FB253 /* DetectionEngine.swift in Sources */,
@@ -708,6 +720,11 @@
 			isa = PBXTargetDependency;
 			target = 773019E22EE4BEA80033EB26 /* FixSleep Watch Watch App */;
 			targetProxy = 773019FD2EE4BEAC0033EB26 /* PBXContainerItemProxy */;
+		};
+		77543F862EE70D450083D5DA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 773019E22EE4BEA80033EB26 /* FixSleep Watch Watch App */;
+			targetProxy = 77543F852EE70D450083D5DA /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -839,6 +856,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = FixSleep/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -871,6 +889,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = FixSleep/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -990,7 +1009,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 7.0;
+				WATCHOS_DEPLOYMENT_TARGET = 8.0;
 			};
 			name = Debug;
 		};
@@ -1022,7 +1041,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 7.0;
+				WATCHOS_DEPLOYMENT_TARGET = 8.0;
 			};
 			name = Release;
 		};
