@@ -35,7 +35,7 @@ class HeartRateMonitor: NSObject, ObservableObject {
     // MARK: - Monitoring Control
 
     /// Start continuous heart rate monitoring
-    func startMonitoring() async throws {
+    func startMonitoring(mealTiming: MealTiming? = nil) async throws {
         guard !isMonitoring else { return }
 
         // Request HealthKit authorization if needed
@@ -73,7 +73,7 @@ class HeartRateMonitor: NSObject, ObservableObject {
 
             await MainActor.run {
                 self.isMonitoring = true
-                DataManager.shared.startSession()
+                DataManager.shared.startSession(mealTiming: mealTiming)
             }
 
             print("Heart rate monitoring started")

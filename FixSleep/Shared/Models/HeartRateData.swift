@@ -30,6 +30,25 @@ struct HeartRateSample: Codable, Identifiable {
     }
 }
 
+/// Meal timing information for correlation analysis
+struct MealTiming: Codable, Equatable {
+    let lastMealTime: Date?
+    let isUnknown: Bool
+
+    /// Time since last meal when session started (in hours)
+    func hoursSinceLastMeal(at sessionStart: Date) -> Double? {
+        guard let mealTime = lastMealTime else { return nil }
+        return sessionStart.timeIntervalSince(mealTime) / 3600.0
+    }
+
+    static let unknown = MealTiming(lastMealTime: nil, isUnknown: true)
+
+    init(lastMealTime: Date?, isUnknown: Bool = false) {
+        self.lastMealTime = lastMealTime
+        self.isUnknown = isUnknown
+    }
+}
+
 /// Represents a collection of heart rate samples for analysis
 struct HeartRateSession: Codable, Identifiable {
     let id: UUID
@@ -37,19 +56,22 @@ struct HeartRateSession: Codable, Identifiable {
     var endTime: Date?
     var samples: [HeartRateSample]
     var detectedEvents: [DetectionEvent]
+    var mealTiming: MealTiming?
 
     init(
         id: UUID = UUID(),
         startTime: Date = Date(),
         endTime: Date? = nil,
         samples: [HeartRateSample] = [],
-        detectedEvents: [DetectionEvent] = []
+        detectedEvents: [DetectionEvent] = [],
+        mealTiming: MealTiming? = nil
     ) {
         self.id = id
         self.startTime = startTime
         self.endTime = endTime
         self.samples = samples
         self.detectedEvents = detectedEvents
+        self.mealTiming = mealTiming
     }
 
     var duration: TimeInterval {
