@@ -36,6 +36,16 @@ Specifications for Xcode (watchOS + iOS) implementation
     - iPhone settings: sleep window, thresholds, alarm preferences, export logs, HealthKit sync controls.
     - Provide onboarding explaining limitations (e.g., not a medical device) and permissions needed.
 
+- Meal Timing Feature
+    - When starting sleep tracking, user is prompted for last meal time.
+    - Quick selection options: 1h, 2h, 3h, 4h, 5h, 6h ago.
+    - "Nao Sei" (Don't Know) button to skip if user is unsure.
+    - Meal timing data stored with each session for correlation analysis.
+    - Enables generation of awakening cause analysis cards showing:
+        - Digestion-related awakenings (late eating → metabolic peaks)
+        - Glucose-related awakenings (prolonged fasting → reactive hypoglycemia)
+        - Orexin reactivation (fasting triggers alertness)
+
 - Data storage & sync
     - Store raw samples and events locally (CoreData or lightweight file store).
     - Sync summaries and events to iPhone via WatchConnectivity.
@@ -61,6 +71,25 @@ Specifications for Xcode (watchOS + iOS) implementation
     - Unit tests for detection logic with synthetic HR/HRV traces.
     - Integration tests for session lifecycle and notifications.
     - Acceptance: correctly detect simulated arousal events with >80% sensitivity and <5% false positives in test data; alert delivered within 5s; data persisted and synced.
+
+- Awakening Cause Analysis
+    - The app correlates detected awakenings with meal timing and time of night to suggest potential causes:
+
+    ~1:00 AM Awakenings:
+    | Factor | Mechanism |
+    |--------|-----------|
+    | Deep sleep → REM | Vulnerable transition, system "re-evaluates" |
+    | Adenosine drop | Sleep pressure diminishes after initial N3 |
+    | Residual NA | If not well suppressed, "escapes" during transition |
+    | Digestion | If ate late, metabolic peak occurs |
+
+    ~3:00 AM Awakenings:
+    | Factor | Mechanism |
+    |--------|-----------|
+    | Cortisol rising | Normally rises 4-5h, but can anticipate |
+    | Glucose dropping | Especially when fasting - reactive hypoglycemia |
+    | Orexin reactivated | Prolonged fasting "wakes" orexinergic system |
+    | Body temperature | Nadir ~3-4h, then rises - vulnerable transition |
 
 - Implementation notes & frameworks
     - Required frameworks: HealthKit, WatchKit, WatchConnectivity, CoreMotion, UserNotifications, CoreData/CloudKit (optional).

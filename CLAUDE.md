@@ -40,6 +40,15 @@ The app consists of two components:
 - Optional ML model hook for advanced detection (include model versioning)
 - Target: >80% sensitivity, <5% false positives, <5s alert latency
 
+**Meal Timing Correlation:**
+- On session start, user is prompted for last meal time (1-6 hours ago options)
+- "Nao Sei" (Don't Know) option to skip if user is unsure
+- Meal timing stored with each session for correlation analysis
+- Used to generate awakening cause analysis cards correlating:
+  - Digestion peaks (late eating → metabolic activity during sleep)
+  - Glucose drops (prolonged fasting → reactive hypoglycemia)
+  - Orexin reactivation (fasting triggers alertness systems)
+
 **Power Management:**
 - Use workout sessions for continuous HR access during sleep window
 - Adaptive sampling: 1 sample/sec during active detection, 5-30s when stable
@@ -88,6 +97,28 @@ Must include Info.plist strings for:
 - Implement opt-in for telemetry and cloud sync
 - Comply with App Store privacy requirements
 
+## Awakening Cause Analysis
+
+The app generates analysis cards explaining potential causes of nocturnal awakenings based on timing and meal data:
+
+### ~1:00 AM Awakenings
+| Factor | Mechanism |
+|--------|-----------|
+| Deep sleep → REM | Vulnerable transition, system "re-evaluates" |
+| Adenosine drop | Sleep pressure diminishes after initial N3 |
+| Residual NA | If not well suppressed, "escapes" during transition |
+| Digestion | If ate late, metabolic peak occurs |
+
+### ~3:00 AM Awakenings
+| Factor | Mechanism |
+|--------|-----------|
+| Cortisol rising | Normally rises 4-5h, but can anticipate |
+| Glucose dropping | Especially when fasting - reactive hypoglycemia |
+| Orexin reactivated | Prolonged fasting "wakes" orexinergic system |
+| Body temperature | Nadir ~3-4h, then rises - vulnerable transition |
+
+The meal timing data helps identify if digestion or fasting-related mechanisms are likely contributors.
+
 ## Acceptance Criteria
 
 Before considering implementation complete:
@@ -102,3 +133,5 @@ Before considering implementation complete:
 - [ ] Battery usage <10% overnight
 - [ ] Alert latency <5 seconds
 - [ ] Detection accuracy: >80% sensitivity, <5% false positives on test data
+- [ ] Meal timing prompt functional on session start
+- [ ] Meal timing data persisted with sessions

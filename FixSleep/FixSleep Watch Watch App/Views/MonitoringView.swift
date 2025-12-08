@@ -12,6 +12,8 @@ struct MonitoringView: View {
     @ObservedObject private var dataManager = DataManager.shared
     @State private var showError = false
     @State private var errorMessage = ""
+    @State private var showMealTimingPrompt = false
+    @State private var pendingMealTiming: MealTiming?
 
     var body: some View {
         ZStack {
@@ -118,6 +120,11 @@ struct MonitoringView: View {
                 dismissButton: .default(Text("OK"))
             )
         }
+        .sheet(isPresented: $showMealTimingPrompt) {
+            MealTimingPromptView(isPresented: $showMealTimingPrompt) { mealTiming in
+                startMonitoringWithMealTiming(mealTiming)
+            }
+        }
     }
 
     private var statusIndicator: some View {
@@ -141,7 +148,7 @@ struct MonitoringView: View {
             if let stats = heartRateMonitor.getStatistics() {
                 HStack(spacing: 12) {
                     VStack(alignment: .leading, spacing: 2) {
-                        Text("Mín")
+                        Text("Min")
                             .font(AppTheme.Typography.tiny())
                             .foregroundColor(AppTheme.Text.muted)
                         Text("\(Int(stats.min))")
@@ -152,7 +159,7 @@ struct MonitoringView: View {
                     Spacer()
 
                     VStack(alignment: .center, spacing: 2) {
-                        Text("Méd")
+                        Text("Med")
                             .font(AppTheme.Typography.tiny())
                             .foregroundColor(AppTheme.Text.muted)
                         Text("\(Int(stats.avg))")
@@ -163,7 +170,7 @@ struct MonitoringView: View {
                     Spacer()
 
                     VStack(alignment: .trailing, spacing: 2) {
-                        Text("Máx")
+                        Text("Max")
                             .font(AppTheme.Typography.tiny())
                             .foregroundColor(AppTheme.Text.muted)
                         Text("\(Int(stats.max))")
@@ -177,13 +184,33 @@ struct MonitoringView: View {
             }
 
             if let session = dataManager.currentSession {
-                HStack {
-                    Image(systemName: AppIcons.alert)
-                        .font(.system(size: 10))
-                        .foregroundColor(AppTheme.Accent.chamomile)
-                    Text("Eventos: \(session.detectedEvents.count)")
-                        .font(AppTheme.Typography.tiny())
-                        .foregroundColor(AppTheme.Text.secondary)
+                VStack(spacing: 4) {
+                    HStack {
+                        Image(systemName: AppIcons.alert)
+                            .font(.system(size: 10))
+                            .foregroundColor(AppTheme.Accent.chamomile)
+                        Text("Eventos: \(session.detectedEvents.count)")
+                            .font(AppTheme.Typography.tiny())
+                            .foregroundColor(AppTheme.Text.secondary)
+                    }
+
+                    // Meal timing info
+                    if let mealTiming = session.mealTiming {
+                        HStack {
+                            Image(systemName: "fork.knife")
+                                .font(.system(size: 10))
+                                .foregroundColor(AppTheme.Accent.chamomile)
+                            if mealTiming.isUnknown {
+                                Text("Refeicao: N/A")
+                                    .font(AppTheme.Typography.tiny())
+                                    .foregroundColor(AppTheme.Text.muted)
+                            } else if let hours = mealTiming.hoursSinceLastMeal(at: session.startTime) {
+                                Text("Refeicao: ha \(Int(hours))h")
+                                    .font(AppTheme.Typography.tiny())
+                                    .foregroundColor(AppTheme.Text.secondary)
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -207,13 +234,18 @@ struct MonitoringView: View {
                 await heartRateMonitor.stopMonitoring()
             }
         } else {
-            Task {
-                do {
-                    try await heartRateMonitor.startMonitoring()
-                } catch {
-                    errorMessage = error.localizedDescription
-                    showError = true
-                }
+            // Show meal timing prompt before starting
+            showMealTimingPrompt = true
+        }
+    }
+
+    private func startMonitoringWithMealTiming(_ mealTiming: MealTiming) {
+        Task {
+            do {
+                try await heartRateMonitor.startMonitoring(mealTiming: mealTiming)
+            } catch {
+                errorMessage = error.localizedDescription
+                showError = true
             }
         }
     }

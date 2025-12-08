@@ -151,8 +151,8 @@ class DataManager: ObservableObject {
     // MARK: - Session Management
 
     /// Start a new monitoring session
-    func startSession() {
-        let session = HeartRateSession(startTime: Date())
+    func startSession(mealTiming: MealTiming? = nil) {
+        let session = HeartRateSession(startTime: Date(), mealTiming: mealTiming)
         currentSession = session
     }
 
