@@ -88,12 +88,12 @@
 			remoteGlobalIDString = 773019E22EE4BEA80033EB26;
 			remoteInfo = "FixSleep Watch Watch App";
 		};
-		77543F852EE70D450083D5DA /* PBXContainerItemProxy */ = {
+		77EFE0FA2EE77E55005F318E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 773019AA2EE4BD140033EB26 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 773019E22EE4BEA80033EB26;
-			remoteInfo = "FixSleep Watch Watch App";
+			remoteGlobalIDString = 773019B12EE4BD140033EB26;
+			remoteInfo = FixSleep;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -411,7 +411,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				77543F862EE70D450083D5DA /* PBXTargetDependency */,
 			);
 			name = FixSleep;
 			productName = FixSleep;
@@ -465,6 +464,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				77EFE0FB2EE77E55005F318E /* PBXTargetDependency */,
 			);
 			name = "FixSleep Watch Watch App";
 			productName = "FixSleep Watch Watch App";
@@ -725,10 +725,10 @@
 			target = 773019E22EE4BEA80033EB26 /* FixSleep Watch Watch App */;
 			targetProxy = 773019FD2EE4BEAC0033EB26 /* PBXContainerItemProxy */;
 		};
-		77543F862EE70D450083D5DA /* PBXTargetDependency */ = {
+		77EFE0FB2EE77E55005F318E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 773019E22EE4BEA80033EB26 /* FixSleep Watch Watch App */;
-			targetProxy = 77543F852EE70D450083D5DA /* PBXContainerItemProxy */;
+			target = 773019B12EE4BD140033EB26 /* FixSleep */;
+			targetProxy = 77EFE0FA2EE77E55005F318E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
