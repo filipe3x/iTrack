@@ -11,10 +11,13 @@ import UserNotifications
 class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenterDelegate {
 
     func applicationDidFinishLaunching() {
-        print("FixSleep Watch Extension launched")
+        print("[ExtensionDelegate] FixSleep Watch Extension launched")
 
         // Start WatchConnectivity so the phone can see this watch app immediately
         WatchConnectivityManager.shared.activate()
+
+        // Start activation retry for simulator reliability
+        WatchConnectivityManager.shared.startActivationRetry()
 
         // Setup notification categories
         HapticManager.shared.setupNotificationCategories()
@@ -24,7 +27,11 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
     }
 
     func applicationDidBecomeActive() {
-        print("FixSleep Watch Extension became active")
+        print("[ExtensionDelegate] FixSleep Watch Extension became active")
+
+        // Re-activate and probe connection when app becomes active
+        WatchConnectivityManager.shared.activate()
+        WatchConnectivityManager.shared.probeConnection()
     }
 
     func applicationWillResignActive() {

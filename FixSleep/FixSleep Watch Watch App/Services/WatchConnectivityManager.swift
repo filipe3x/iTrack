@@ -18,8 +18,14 @@ class WatchConnectivityManager: NSObject, ObservableObject {
     @Published var lastSentTimestamp: Date?
     @Published var isiPhonePaired = false
     @Published var isiOSAppInstalled = false
+    @Published var activationState: WCSessionActivationState = .notActivated
+    @Published var lastHandshakeSucceeded: Bool?
+    @Published var lastHandshakeError: String?
 
     private let session: WCSession? = WCSession.isSupported() ? WCSession.default : nil
+    private var activationRetryCount = 0
+    private let maxActivationRetries = 5
+    private var activationTimer: Timer?
 
     private override init() {
         super.init()
@@ -29,12 +35,95 @@ class WatchConnectivityManager: NSObject, ObservableObject {
 
     func activate() {
         guard let session = session else {
-            print("WatchConnectivity not supported")
+            print("[WCManager-Watch] WatchConnectivity not supported")
             return
         }
 
         session.delegate = self
-        session.activate()
+
+        print("[WCManager-Watch] Activating WCSession... (attempt \(activationRetryCount + 1))")
+        print("[WCManager-Watch] isSupported: \(WCSession.isSupported())")
+
+        if session.activationState == .notActivated {
+            session.activate()
+        } else {
+            print("[WCManager-Watch] Session already activated with state: \(session.activationState.rawValue)")
+            updateState(from: session)
+        }
+    }
+
+    /// Start periodic activation attempts for simulator reliability
+    func startActivationRetry() {
+        stopActivationRetry()
+        activationRetryCount = 0
+
+        activationTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { [weak self] _ in
+            guard let self = self else { return }
+
+            if self.activationState == .activated && self.isiPhoneReachable {
+                print("[WCManager-Watch] Connection established, stopping retry")
+                self.stopActivationRetry()
+                return
+            }
+
+            self.activationRetryCount += 1
+            if self.activationRetryCount > self.maxActivationRetries {
+                print("[WCManager-Watch] Max activation retries reached")
+                self.stopActivationRetry()
+                return
+            }
+
+            print("[WCManager-Watch] Retry activation attempt \(self.activationRetryCount)")
+            self.activate()
+
+            // Also probe if session is activated but not reachable
+            if self.activationState == .activated {
+                self.probeConnection()
+            }
+        }
+    }
+
+    func stopActivationRetry() {
+        activationTimer?.invalidate()
+        activationTimer = nil
+    }
+
+    /// Probe connection to iPhone
+    func probeConnection() {
+        guard let session = session, session.activationState == .activated else {
+            print("[WCManager-Watch] Cannot probe: session not activated")
+            return
+        }
+
+        print("[WCManager-Watch] Probing connection - isReachable: \(session.isReachable)")
+
+        guard session.isReachable else {
+            DispatchQueue.main.async {
+                self.lastHandshakeSucceeded = false
+                self.lastHandshakeError = "iPhone not reachable"
+            }
+            return
+        }
+
+        let payload: [String: Any] = [
+            "type": "ping",
+            "timestamp": Date().timeIntervalSince1970
+        ]
+
+        session.sendMessage(payload, replyHandler: { reply in
+            print("[WCManager-Watch] ✓ Received pong from iPhone: \(reply)")
+            DispatchQueue.main.async {
+                self.lastHandshakeSucceeded = true
+                self.lastHandshakeError = nil
+                self.stopActivationRetry()
+            }
+        }, errorHandler: { error in
+            print("[WCManager-Watch] ✗ Ping failed: \(error.localizedDescription)")
+            DispatchQueue.main.async {
+                self.lastHandshakeSucceeded = false
+                self.lastHandshakeError = error.localizedDescription
+            }
+        })
     }
 
     // MARK: - Send Data to iPhone
@@ -227,19 +316,32 @@ class WatchConnectivityManager: NSObject, ObservableObject {
 
 extension WatchConnectivityManager: WCSessionDelegate {
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+        let stateNames = ["notActivated", "inactive", "activated"]
+        let stateName = stateNames[min(activationState.rawValue, 2)]
+
+        print("[WCManager-Watch] ===== ACTIVATION COMPLETE =====")
+        print("[WCManager-Watch] State: \(stateName) (\(activationState.rawValue))")
+        print("[WCManager-Watch] isCompanionAppInstalled: \(session.isCompanionAppInstalled)")
+        print("[WCManager-Watch] isReachable: \(session.isReachable)")
+        print("[WCManager-Watch] ==============================")
+
         DispatchQueue.main.async {
+            self.activationState = activationState
             self.isiPhonePaired = self.isPaired(session)
             self.isiOSAppInstalled = self.isCompanionAppInstalled(session)
             self.isiPhoneReachable = session.isReachable
         }
 
         if let error = error {
-            print("WCSession activation failed: \(error.localizedDescription)")
-        } else {
-            print("WCSession activated with state: \(activationState.rawValue)")
+            print("[WCManager-Watch] Activation error: \(error.localizedDescription)")
+        } else if activationState == .activated {
+            // Start retry mechanism to establish connection in simulators
+            self.startActivationRetry()
+            self.probeConnection()
 
             if session.isReachable {
                 if let payload = latestHeartRatePayload() {
+                    print("[WCManager-Watch] Sending initial heart rate to iPhone")
                     session.sendMessage(["type": "heartRate"].merging(payload) { $1 }, replyHandler: nil)
                 }
             }
@@ -247,14 +349,23 @@ extension WatchConnectivityManager: WCSessionDelegate {
     }
 
     func sessionReachabilityDidChange(_ session: WCSession) {
+        print("[WCManager-Watch] ===== REACHABILITY CHANGED =====")
+        print("[WCManager-Watch] isReachable: \(session.isReachable)")
+        print("[WCManager-Watch] isCompanionAppInstalled: \(session.isCompanionAppInstalled)")
+        print("[WCManager-Watch] ================================")
+
         DispatchQueue.main.async {
             self.isiPhonePaired = self.isPaired(session)
             self.isiOSAppInstalled = self.isCompanionAppInstalled(session)
             self.isiPhoneReachable = session.isReachable
-            print("iPhone reachability changed: \(session.isReachable)")
 
-            if session.isReachable, let payload = self.latestHeartRatePayload() {
-                session.sendMessage(["type": "heartRate"].merging(payload) { $1 }, replyHandler: nil)
+            if session.isReachable {
+                self.stopActivationRetry()
+
+                if let payload = self.latestHeartRatePayload() {
+                    print("[WCManager-Watch] Sending heart rate after becoming reachable")
+                    session.sendMessage(["type": "heartRate"].merging(payload) { $1 }, replyHandler: nil)
+                }
             }
         }
     }
@@ -262,6 +373,7 @@ extension WatchConnectivityManager: WCSessionDelegate {
     // MARK: - Receive Messages
 
     func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
+        print("[WCManager-Watch] didReceiveMessage (no reply): \(message)")
         handleReceivedMessage(message)
     }
 
@@ -270,9 +382,12 @@ extension WatchConnectivityManager: WCSessionDelegate {
         didReceiveMessage message: [String : Any],
         replyHandler: @escaping ([String : Any]) -> Void
     ) {
+        print("[WCManager-Watch] didReceiveMessage (with reply): \(message)")
+
         if let type = message["type"] as? String {
             switch type {
             case "eventsRequest":
+                print("[WCManager-Watch] Responding to eventsRequest")
                 if let data = try? JSONEncoder().encode(DataManager.shared.loadAllEvents()) {
                     replyHandler(["events": data])
                 } else {
@@ -280,16 +395,25 @@ extension WatchConnectivityManager: WCSessionDelegate {
                 }
                 return
             case "ping":
+                print("[WCManager-Watch] Responding to ping with pong")
                 replyHandler([
                     "type": "pong",
                     "isMonitoring": HeartRateMonitor.shared.isMonitoring,
                     "timestamp": Date().timeIntervalSince1970
                 ])
+                // Mark successful handshake
+                DispatchQueue.main.async {
+                    self.lastHandshakeSucceeded = true
+                    self.lastHandshakeError = nil
+                    self.stopActivationRetry()
+                }
                 return
             case "statusRequest":
+                print("[WCManager-Watch] Responding to statusRequest")
                 replyHandler(["isMonitoring": HeartRateMonitor.shared.isMonitoring])
                 return
             case "heartRateRequest":
+                print("[WCManager-Watch] Responding to heartRateRequest")
                 if let payload = latestHeartRatePayload() {
                     replyHandler(payload)
                 } else {
@@ -306,6 +430,7 @@ extension WatchConnectivityManager: WCSessionDelegate {
     }
 
     func session(_ session: WCSession, didReceiveUserInfo userInfo: [String : Any] = [:]) {
+        print("[WCManager-Watch] didReceiveUserInfo: \(userInfo)")
         handleReceivedMessage(userInfo)
     }
 
