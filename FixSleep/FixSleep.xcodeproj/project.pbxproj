@@ -59,6 +59,19 @@
 		FW1KFA831QA4M99JJV2IURPR /* CustomSensitivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = TZUBOQ2SUUSYSE13VZ1FTGDD /* CustomSensitivityView.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		77EFE0FC2EE77E56005F318E /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXContainerItemProxy section */
 		773019C32EE4BD160033EB26 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -94,6 +107,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 773019B12EE4BD140033EB26;
 			remoteInfo = FixSleep;
+		};
+		77EFE0FE2EE77E58005F318E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 773019AA2EE4BD140033EB26 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 773019E22EE4BEA80033EB26;
+			remoteInfo = "FixSleep Watch Watch App";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -407,10 +427,12 @@
 				773019AE2EE4BD140033EB26 /* Sources */,
 				773019AF2EE4BD140033EB26 /* Frameworks */,
 				773019B02EE4BD140033EB26 /* Resources */,
+				77EFE0FC2EE77E56005F318E /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				77EFE0FD2EE77E57005F318E /* PBXTargetDependency */,
 			);
 			name = FixSleep;
 			productName = FixSleep;
@@ -464,7 +486,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				77EFE0FB2EE77E55005F318E /* PBXTargetDependency */,
 			);
 			name = "FixSleep Watch Watch App";
 			productName = "FixSleep Watch Watch App";
@@ -729,6 +750,11 @@
 			isa = PBXTargetDependency;
 			target = 773019B12EE4BD140033EB26 /* FixSleep */;
 			targetProxy = 77EFE0FA2EE77E55005F318E /* PBXContainerItemProxy */;
+		};
+		77EFE0FD2EE77E57005F318E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 773019E22EE4BEA80033EB26 /* FixSleep Watch Watch App */;
+			targetProxy = 77EFE0FE2EE77E58005F318E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1009,7 +1035,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = brasume.com.FixSleep.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
+				SKIP_INSTALL = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
@@ -1041,7 +1067,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = brasume.com.FixSleep.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
+				SKIP_INSTALL = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
